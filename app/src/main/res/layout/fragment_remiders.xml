@@ -9,8 +9,8 @@
         android:id="@+id/tv_reminders_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reminders Fragment"
-        android:textSize="50dp"
+        android:text="@string/reminders_fragment"
+        android:textSize="50sp"
         android:layout_centerInParent="true"
         />
     

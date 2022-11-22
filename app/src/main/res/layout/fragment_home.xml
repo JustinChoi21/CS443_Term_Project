@@ -9,8 +9,8 @@
         android:id="@+id/tv_home_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        android:textSize="50dp"
+        android:text="@string/home_fragment"
+        android:textSize="50sp"
         android:layout_centerInParent="true"
         />
     
