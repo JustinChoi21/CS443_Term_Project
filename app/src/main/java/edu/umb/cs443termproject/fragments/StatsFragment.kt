@@ -1,4 +1,4 @@
-package com.example.cs443termproject.fragments
+package edu.umb.cs443termproject.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

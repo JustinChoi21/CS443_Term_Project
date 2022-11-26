@@ -1,4 +1,4 @@
-package com.example.cs443termproject
+package edu.umb.cs443termproject
 
 import org.junit.Test
 

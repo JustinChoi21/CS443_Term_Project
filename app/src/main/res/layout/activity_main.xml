@@ -8,7 +8,7 @@
     android:background="#FFFFFF"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context=".MainActivity">
+    tools:context="edu.umb.cs443termproject.MainActivity">
 
     <!-- Fragment Container -->
     <androidx.fragment.app.FragmentContainerView

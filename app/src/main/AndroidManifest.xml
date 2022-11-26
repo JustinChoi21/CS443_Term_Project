@@ -13,7 +13,7 @@
         android:theme="@style/Theme.CS443TermProject"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="edu.umb.cs443termproject.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
