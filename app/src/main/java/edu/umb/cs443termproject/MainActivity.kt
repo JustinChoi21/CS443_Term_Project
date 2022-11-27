@@ -2,7 +2,7 @@ package edu.umb.cs443termproject
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.cs443termproject.R
+import edu.umb.cs443termproject.R
 import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
