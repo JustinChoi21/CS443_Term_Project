@@ -1,9 +1,7 @@
 package edu.umb.cs443termproject
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import edu.umb.cs443termproject.R
-import com.google.firebase.database.FirebaseDatabase
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
