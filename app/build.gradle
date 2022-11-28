@@ -4,6 +4,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     // Hee: Enable type-safe navigation and argument passing (https://developer.android.com/guide/navigation/navigation-getting-started)
     id 'com.google.gms.google-services' // To use firebase
+    id 'kotlin-android-extensions' // To use bottom_nav
 }
 
 android {
