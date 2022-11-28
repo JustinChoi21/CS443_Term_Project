@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // todo: Firebase database test // https://youtu.be/1qs7aUnR7yw?t=530
+        // todo: Logout https://youtu.be/xZthfQ9Elx4?t=2838
 
     }
 }
