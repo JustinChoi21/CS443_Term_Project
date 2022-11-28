@@ -52,11 +52,11 @@ class RegisterActivity : AppCompatActivity() {
                     mDatabaseReference.child("UserAccount").child(firebaseUser?.uid ?: "uid null")
                         .setValue(account) // setValue = DB insert
 
-                    Toast.makeText(baseContext, "Register Success!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Register Success!", Toast.LENGTH_LONG).show()
 
                 } else {
                     Log.d(TAG, "onCreate: Register Fail")
-                    Toast.makeText(baseContext, "Register Failed.",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Register Failed.",Toast.LENGTH_LONG).show()
                 }
             }
         }
