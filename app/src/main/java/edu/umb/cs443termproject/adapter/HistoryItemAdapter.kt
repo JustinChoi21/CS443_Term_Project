@@ -35,12 +35,14 @@ class HistoryItemAdapter(val historyList: ArrayList<HistoryItems>) : RecyclerVie
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.icon.setImageResource(historyList.get(position).icon)
         holder.eventType.text = historyList.get(position).eventType
+        holder.eventDate.text = historyList.get(position).eventDate
         holder.eventDescription.text = historyList.get(position).eventDescription
     }
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val icon = itemView.findViewById<ImageView>(R.id.iv_list_icon_history)
         val eventType = itemView.findViewById<TextView>(R.id.tv_event_type)
+        val eventDate = itemView.findViewById<TextView>(R.id.tv_event_date)
         val eventDescription = itemView.findViewById<TextView>(R.id.tv_event_description)
     }
 

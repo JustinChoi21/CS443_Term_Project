@@ -36,22 +36,20 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val historyList = arrayListOf(
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_oil, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_service, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_tire, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_oil, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_service, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_tire, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_oil, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_oil, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_service, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_tire, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_oil, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
         )
 
         val recyclerView: RecyclerView = view.findViewById(R.id.rv_history)
