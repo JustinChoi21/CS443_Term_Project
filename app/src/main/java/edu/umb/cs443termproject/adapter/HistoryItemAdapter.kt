@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.data.HistoryItems
@@ -13,7 +14,17 @@ class HistoryItemAdapter(val historyList: ArrayList<HistoryItems>) : RecyclerVie
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_history, parent, false)
-        return CustomViewHolder(view)
+        // return CustomViewHolder(view)
+
+        return CustomViewHolder(view).apply {
+            itemView.setOnClickListener{
+                val curPos : Int = adapterPosition
+                val historyItem : HistoryItems = historyList.get(curPos)
+                Toast.makeText(parent.context,
+                    "type: " + historyItem.eventType + " / description : " + historyItem.eventDescription,
+                    Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     override fun getItemCount(): Int {
