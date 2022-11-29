@@ -1,23 +1,20 @@
 package edu.umb.cs443termproject
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import edu.umb.cs443termproject.room.AppDatabase
 import edu.umb.cs443termproject.room.Login
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.launch
-import kotlin.math.log
 
 class LoginActivity : AppCompatActivity() {
 
