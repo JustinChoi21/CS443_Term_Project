@@ -5,6 +5,8 @@ plugins {
     // Hee: Enable type-safe navigation and argument passing (https://developer.android.com/guide/navigation/navigation-getting-started)
     id 'com.google.gms.google-services' // To use firebase
     id 'kotlin-android-extensions' // To use bottom_nav
+    id 'kotlin-kapt'
+
 }
 
 android {
@@ -61,7 +63,14 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
 
     // Room
+    def room_version = "2.4.3"
     implementation 'androidx.room:room-ktx:2.4.3'
+    implementation("androidx.room:room-runtime:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$room_version")
+    // To use Kotlin Symbol Processing (KSP)
+    // ksp("androidx.room:room-compiler:$room_version")
 
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:31.1.0')

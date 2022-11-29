@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import edu.umb.cs443termproject.room.AppDatabase
+import edu.umb.cs443termproject.room.RoomHelper
 import edu.umb.cs443termproject.room.Login
 import kotlinx.coroutines.launch
 
@@ -32,9 +32,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        // todo: create database
-
 
         // todo: Check stay logged in
 
@@ -68,7 +65,7 @@ class LoginActivity : AppCompatActivity() {
                         // todo: store email to Room database
                         lifecycleScope.launch {
                             var login = Login(strEmail, true)
-                            AppDatabase(this@LoginActivity).getLoginDao().addLogin(login)
+                            RoomHelper.getDatabase(this@LoginActivity).loginDao().addLogin(login)
                             finish()
                         }
 
