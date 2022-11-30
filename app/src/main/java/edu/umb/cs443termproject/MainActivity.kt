@@ -1,18 +1,17 @@
 package edu.umb.cs443termproject
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import edu.umb.cs443termproject.databinding.ActivityMainBinding
 import edu.umb.cs443termproject.fragments.HistoryFragment
 import edu.umb.cs443termproject.fragments.HomeFragment
 import edu.umb.cs443termproject.fragments.RemindersFragment
@@ -34,8 +33,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var remindersFragment: RemindersFragment
 
     // drawer menu
-    lateinit var binding: ActivityMainBinding
     lateinit var toggle: ActionBarDrawerToggle
+    lateinit var drawerLayout : DrawerLayout
 
     // Firebase Logout
     private lateinit var mFirebaseAuth: FirebaseAuth
@@ -43,42 +42,40 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // setContentView(R.layout.activity_main) // this will be deprecated and replaced by ViewBinding
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
+
+        drawerLayout = findViewById(R.id.drawer_layout)
+        val drawerMenu : NavigationView = findViewById(R.id.drawerMenu)
+
+        toggle = ActionBarDrawerToggle(this@MainActivity, drawerLayout, R.string.drawer_open, R.string.drawer_close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true) // header drawer icon
+
+        // when click menu
+        drawerMenu.setNavigationItemSelectedListener {
+            when(it.itemId) {
+                R.id.logout -> {
+                    Log.d(TAG, "onCreate: drawer menu logout clicked!")
+                    mFirebaseAuth.signOut()
+
+                    lifecycleScope.launch {
+                        RoomHelper.getDatabase(this@MainActivity).getLoginDao().deleteAllLogin()
+                    }
+
+                    var intent: Intent = Intent(this@MainActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish() // delete current activity, because we don't need to back to login activity
+                }
+            }
+            true
+        }
 
         // firebase (logout)
         mFirebaseAuth = FirebaseAuth.getInstance()
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("CS443") // string to unify firebase ref
 
-        // drawer menu
-        binding.apply {
-            toggle = ActionBarDrawerToggle(this@MainActivity, drawerLayout, R.string.drawer_open, R.string.drawer_close)
-            drawerLayout.addDrawerListener(toggle)
-            toggle.syncState()
-
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-            // when click menu
-            drawerMenuId.setNavigationItemSelectedListener { 
-                when(it.itemId) {
-                    R.id.logout -> {
-                        Log.d(TAG, "onCreate: drawer menu logout clicked!")
-                        mFirebaseAuth.signOut()
-
-                        lifecycleScope.launch {
-                            RoomHelper.getDatabase(this@MainActivity).getLoginDao().deleteAllLogin()
-                        }
-
-                        var intent: Intent = Intent(this@MainActivity, LoginActivity::class.java)
-                        startActivity(intent)
-                        finish() // delete current activity, because we don't need to back to login activity
-                    }
-                }
-                true
-            }
-
-        }
 
         // first fragment
         homeFragment = HomeFragment.newInstance()
@@ -119,7 +116,7 @@ class MainActivity : AppCompatActivity() {
     // drawer menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
-            true
+            return true
         }
         return super.onOptionsItemSelected(item)
     }
