@@ -33,4 +33,20 @@
         app:itemIconSize="25dp"
         />
 
+    <!-- Drawer Menu -->
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/drawer_menu"
+            app:menu="@menu/drawer_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:layout_gravity="left"
+            />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
 </RelativeLayout>

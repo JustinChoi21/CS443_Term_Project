@@ -17,18 +17,24 @@ class MainActivity : AppCompatActivity() {
         const val TAG : String = "CS443"
     }
 
+    // fragments
     private lateinit var homeFragment: HomeFragment
     private lateinit var historyFragment: HistoryFragment
     private lateinit var statsFragment: StatsFragment
     private lateinit var remindersFragment: RemindersFragment
 
+    // drawer menu
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main) // this will be deprecated and replaced by ViewBinding
 
+        // first fragment
         homeFragment = HomeFragment.newInstance()
         supportFragmentManager.beginTransaction().add(R.id.fragments_frame, homeFragment).commit()
 
+        // when click bottom navigation
         val onBottomNavItemSelectedListener = bottom_nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.homeFragment -> {
@@ -56,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // todo: Logout https://youtu.be/xZthfQ9Elx4?t=2838
+        // var drawerLayout = findViewById()
 
     }
 }
