@@ -10,7 +10,27 @@
         android:background="#D8D8D8"
         >
 
+        <!-- FAB -->
+
         <!-- Fragment Container -->
+
+
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--                android:id="@+id/floatingActionButton"-->
+<!--                android:layout_width="157dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:layout_marginBottom="20dp"-->
+<!--                android:clickable="true"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:srcCompat="@drawable/ic_baseline_add_24" />-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
         <FrameLayout
             android:id="@+id/fragments_frame"
             android:layout_width="match_parent"
@@ -19,7 +39,9 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:background="@color/white"
-            />
+            >
+
+        </FrameLayout>
 
         <!-- Bottom Navigation -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -32,7 +54,9 @@
             android:background="#fff"
             app:labelVisibilityMode="labeled"
             app:itemIconSize="25dp"
-            />
+            >
+
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
 
         <!-- Drawer Menu -->
         <androidx.drawerlayout.widget.DrawerLayout
@@ -42,12 +66,13 @@
 
             <com.google.android.material.navigation.NavigationView
                 android:id="@+id/drawerMenuId"
-                app:menu="@menu/drawer_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
                 android:layout_gravity="left"
-                />
+                android:fitsSystemWindows="true"
+                app:menu="@menu/drawer_menu">
+
+            </com.google.android.material.navigation.NavigationView>
 
         </androidx.drawerlayout.widget.DrawerLayout>
 
