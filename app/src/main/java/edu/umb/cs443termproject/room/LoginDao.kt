@@ -16,6 +16,9 @@ interface LoginDao {
     @Query("SELECT * FROM login ORDER BY id DESC")
     suspend fun getAllLogin(): List<Login>
 
+    @Query("DELETE FROM login")
+    suspend fun deleteAllLogin()
+
     @Update
     suspend fun updateLogin(login: Login)
 

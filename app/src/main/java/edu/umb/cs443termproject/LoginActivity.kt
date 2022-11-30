@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
 
         // login button click
         mFirebaseAuth = FirebaseAuth.getInstance()
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("CS443") // just any string to unify firebase ref
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference("CS443") // string to unify firebase ref
 
         mEtEmail = findViewById(R.id.et_login_email)
         mEtPwd = findViewById(R.id.et_login_pwd)
