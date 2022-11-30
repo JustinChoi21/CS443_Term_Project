@@ -1,10 +1,13 @@
 package edu.umb.cs443termproject
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import edu.umb.cs443termproject.databinding.ActivityMainBinding
 import edu.umb.cs443termproject.fragments.HistoryFragment
 import edu.umb.cs443termproject.fragments.HomeFragment
 import edu.umb.cs443termproject.fragments.RemindersFragment
@@ -24,11 +27,33 @@ class MainActivity : AppCompatActivity() {
     private lateinit var remindersFragment: RemindersFragment
 
     // drawer menu
-
+    lateinit var binding: ActivityMainBinding
+    lateinit var toggle: ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main) // this will be deprecated and replaced by ViewBinding
+        // setContentView(R.layout.activity_main) // this will be deprecated and replaced by ViewBinding
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // drawer menu
+        binding.apply {
+            toggle = ActionBarDrawerToggle(this@MainActivity, drawerLayout, R.string.drawer_open, R.string.drawer_close)
+            drawerLayout.addDrawerListener(toggle)
+            toggle.syncState()
+
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+            drawerMenuId.setNavigationItemSelectedListener { 
+                when(it.itemId) {
+                    R.id.logout -> {
+                        Log.d(TAG, "onCreate: drawer menu logout clicked!")
+                    }
+                }
+                true
+            }
+
+        }
 
         // first fragment
         homeFragment = HomeFragment.newInstance()
@@ -64,6 +89,14 @@ class MainActivity : AppCompatActivity() {
         // todo: Logout https://youtu.be/xZthfQ9Elx4?t=2838
         // var drawerLayout = findViewById()
 
+    }
+
+    // drawer menu
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
 

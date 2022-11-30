@@ -8,4 +8,8 @@
     <string name="home_fragment">Home Fragment</string>
     <string name="reminders_fragment">Reminders Fragment</string>
     <string name="stats_fragment">Stats Fragment</string>
+
+    <!-- drawer menu -->
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 </resources>

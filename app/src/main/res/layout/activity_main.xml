@@ -1,52 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:background="#D8D8D8"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Fragment Container -->
-    <FrameLayout
-        android:id="@+id/fragments_frame"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_nav"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/white"
-        />
+        tools:context=".MainActivity"
+        android:background="#D8D8D8"
+        >
 
-    <!-- Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
-        app:menu="@menu/bottom_nav_menu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="#fff"
-        app:labelVisibilityMode="labeled"
-        app:itemIconSize="25dp"
-        />
-
-    <!-- Drawer Menu -->
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/drawer_menu"
-            app:menu="@menu/drawer_menu"
-            android:layout_width="wrap_content"
+        <!-- Fragment Container -->
+        <FrameLayout
+            android:id="@+id/fragments_frame"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            android:layout_gravity="left"
+            android:layout_above="@id/bottom_nav"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/white"
             />
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+        <!-- Bottom Navigation -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            app:menu="@menu/bottom_nav_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="#fff"
+            app:labelVisibilityMode="labeled"
+            app:itemIconSize="25dp"
+            />
 
-</RelativeLayout>
+        <!-- Drawer Menu -->
+        <androidx.drawerlayout.widget.DrawerLayout
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.navigation.NavigationView
+                android:id="@+id/drawerMenuId"
+                app:menu="@menu/drawer_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:layout_gravity="left"
+                />
+
+        </androidx.drawerlayout.widget.DrawerLayout>
+
+    </RelativeLayout>
+</layout>
