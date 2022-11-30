@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(entities = arrayOf(Login::class), version = 1, exportSchema = false)
 abstract class RoomHelper : RoomDatabase() {
-    abstract fun loginDao(): LoginDao
+    abstract fun getLoginDao(): LoginDao
 
     companion object {
 

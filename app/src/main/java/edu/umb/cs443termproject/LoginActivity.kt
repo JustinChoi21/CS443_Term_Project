@@ -14,7 +14,11 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import edu.umb.cs443termproject.room.RoomHelper
 import edu.umb.cs443termproject.room.Login
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 class LoginActivity : AppCompatActivity() {
 
@@ -33,8 +37,23 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // todo: Check stay logged in
+        // Check stay logged in
+        var stayLoggedIn: Boolean = false
+        lifecycleScope.launch {
+            val loginList: List<Login> = RoomHelper.getDatabase(this@LoginActivity).getLoginDao().getAllLogin()
+            if(!loginList.isEmpty()) {
+                stayLoggedIn = loginList?.get(0)?.stayLoggedIn ?: false
+            }
+            Log.d(TAG, "LoginActivity - onCreate() stayLoggedIn : $stayLoggedIn")
 
+            withContext(Dispatchers.Main) {
+                if(stayLoggedIn) {
+                    var intent: Intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish() // delete current activity, because we don't need to back to login activity
+                }
+            }
+        }
 
         // register button click -> move to Register activity
         val btnRegister: Button = findViewById(R.id.btn_move_to_register)
@@ -62,26 +81,32 @@ class LoginActivity : AppCompatActivity() {
 
                     if(mSwitchStayLoggedIn.isChecked) {
                         Log.d(TAG, "onCreate: Stay Logged In checked")
-                        // todo: store email to Room database
+
+                        // store stay logged in to Room database
                         lifecycleScope.launch {
                             var login = Login(strEmail, true)
-                            RoomHelper.getDatabase(this@LoginActivity).loginDao().addLogin(login)
+                            RoomHelper.getDatabase(this@LoginActivity).getLoginDao().addLogin(login)
                             finish()
                         }
 
                     } else {
-                        // todo: delete email on Room database
+                        // todo: delete stay logged in on Room database
                     }
-                    
+
                     var intent: Intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish() // delete current activity, because we don't need to back to login activity
+
                 } else {
                     Toast.makeText(this, "Login Failed.", Toast.LENGTH_LONG).show()
                 }
             }
         }
     } // onCreate End
+
+    fun moveToMainActivity() {
+
+    }
 
 
 }
