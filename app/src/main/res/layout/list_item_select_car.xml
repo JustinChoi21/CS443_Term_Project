@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ImageView
-            android:id="@+id/iv_list_icon_history"
+            android:id="@+id/iv_list_icon_select_car"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="8dp"
@@ -32,17 +32,16 @@
             app:srcCompat="@drawable/subaru_outback" />
 
         <TextView
-            android:id="@+id/tv_event_type"
+            android:id="@+id/tv_manufacturer_model"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="20dp"
             android:textSize="20sp"
             android:text="Subaru Outback 2022"
             android:textColor="#000000"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_list_icon_history"
-            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_history"
-            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_history" />
+            app:layout_constraintBottom_toBottomOf="@+id/iv_list_icon_select_car"
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_select_car"
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_select_car" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

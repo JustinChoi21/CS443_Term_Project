@@ -1,4 +1,4 @@
 package edu.umb.cs443termproject.data
 
-class HistoryItems(val icon: Int, val eventType: String, val eventDate: String, val eventDescription: String) {
+class SelectCarItems(val icon: Int, val ManufacturerName: String, val model: String) {
 }

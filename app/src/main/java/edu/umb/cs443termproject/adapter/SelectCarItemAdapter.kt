@@ -8,42 +8,39 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import edu.umb.cs443termproject.R
-import edu.umb.cs443termproject.data.HistoryItems
+import edu.umb.cs443termproject.data.SelectCarItems
 
-class HistoryItemAdapter(val historyList: ArrayList<HistoryItems>) : RecyclerView.Adapter<HistoryItemAdapter.CustomViewHolder>() {
+class SelectCarItemAdapter(val selectCarList: ArrayList<SelectCarItems>) : RecyclerView.Adapter<SelectCarItemAdapter.CustomViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_history, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectCarItemAdapter.CustomViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_select_car, parent, false)
         // return CustomViewHolder(view)
 
         return CustomViewHolder(view).apply {
             itemView.setOnClickListener{
                 val curPos : Int = adapterPosition
-                val historyItem : HistoryItems = historyList.get(curPos)
+                val selectCarItem : SelectCarItems = selectCarList.get(curPos)
                 Toast.makeText(parent.context,
-                    "type: " + historyItem.eventType + " / description : " + historyItem.eventDescription,
+                    "ManufacturerName: " + selectCarItem.ManufacturerName + " / model : " + selectCarItem.model,
                     Toast.LENGTH_LONG).show()
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return historyList.size
+        return selectCarList.size
     }
 
     // called when we scroll or use the list
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder.icon.setImageResource(historyList.get(position).icon)
-        holder.eventType.text = historyList.get(position).eventType
-        holder.eventDate.text = historyList.get(position).eventDate
-        holder.eventDescription.text = historyList.get(position).eventDescription
+        holder.icon.setImageResource(selectCarList.get(position).icon)
+        holder.manufacturer_model.text =
+            selectCarList.get(position).ManufacturerName + " " + selectCarList.get(position).model
     }
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val icon = itemView.findViewById<ImageView>(R.id.iv_list_icon_history)
-        val eventType = itemView.findViewById<TextView>(R.id.tv_event_type)
-        val eventDate = itemView.findViewById<TextView>(R.id.tv_event_date)
-        val eventDescription = itemView.findViewById<TextView>(R.id.tv_event_description)
+        val icon = itemView.findViewById<ImageView>(R.id.iv_list_icon_select_car)
+        val manufacturer_model = itemView.findViewById<TextView>(R.id.tv_manufacturer_model)
     }
 
 }

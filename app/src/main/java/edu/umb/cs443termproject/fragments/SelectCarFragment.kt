@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.adapter.HistoryItemAdapter
+import edu.umb.cs443termproject.adapter.SelectCarItemAdapter
 import edu.umb.cs443termproject.data.HistoryItems
+import edu.umb.cs443termproject.data.SelectCarItems
 
 class SelectCarFragment : Fragment() {
 
@@ -29,21 +31,33 @@ class SelectCarFragment : Fragment() {
     ): View? {
 
         Log.d(TAG, "SelectCarFragment - onCreateView() called")
-        return inflater.inflate(R.layout.fragment_history, container, false)
+        return inflater.inflate(R.layout.fragment_select_car, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val historyList = arrayListOf(
-            HistoryItems(R.drawable.list_icon_fuel, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_oil, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
-            HistoryItems(R.drawable.list_icon_service, "Refuel", "10/25/22", "Date: 10/25/2022, Fuel: 30L, Type: Regular"),
+        val selectCarList = arrayListOf(
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
+            SelectCarItems(R.drawable.subaru_outback, "Subaru", " Outaback 2022"),
         )
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.rv_history)
+        val recyclerView: RecyclerView = view.findViewById(R.id.rv_select_car)
         recyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
         recyclerView.setHasFixedSize(true) // it makes good performance
-        recyclerView.adapter = HistoryItemAdapter(historyList)
+        recyclerView.adapter = SelectCarItemAdapter(selectCarList)
     }
 }
