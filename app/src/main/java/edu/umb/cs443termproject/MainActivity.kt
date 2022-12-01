@@ -82,9 +82,11 @@ class MainActivity : AppCompatActivity() {
         val fragmentName = bundle?.get("fragment").toString()
         Log.d(TAG, "MainActivity - onCreate() fragment Name : $fragmentName")
         if (fragmentName == "SelectCar") {
+            this.title = "Select Your Car"
             selectCarFragment = SelectCarFragment.newInstance()
             supportFragmentManager.beginTransaction().add(R.id.fragments_frame, selectCarFragment).commit()
         } else {
+            this.title = "Home"
             homeFragment = HomeFragment.newInstance()
             supportFragmentManager.beginTransaction().add(R.id.fragments_frame, homeFragment).commit()
         }
@@ -93,21 +95,25 @@ class MainActivity : AppCompatActivity() {
         val onBottomNavItemSelectedListener = bottom_nav.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.homeFragment -> {
+                    this.title = "Home"
                     Log.d(TAG, "MainActivity - homeFragment clicked!")
                     homeFragment = HomeFragment.newInstance()
                     supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, homeFragment).commit()
                 }
                 R.id.historyFragment -> {
+                    this.title = "Maintenance History"
                     Log.d(TAG, "MainActivity - historyFragment clicked!")
                     historyFragment = HistoryFragment.newInstance()
                     supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, historyFragment).commit()
                 }
                 R.id.statsFragment -> {
+                    this.title = "Statistics"
                     Log.d(TAG, "MainActivity - statsFragment clicked!")
                     statsFragment = StatsFragment.newInstance()
                     supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, statsFragment).commit()
                 }
                 R.id.remindersFragment -> {
+                    this.title = "Reminders"
                     Log.d(TAG, "MainActivity - remindersFragment clicked!")
                     remindersFragment = RemindersFragment.newInstance()
                     supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, remindersFragment).commit()
