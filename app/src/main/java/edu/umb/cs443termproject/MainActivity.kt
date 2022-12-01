@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var statsFragment: StatsFragment
     private lateinit var remindersFragment: RemindersFragment
     private lateinit var inputFragment: InputFragment
+    private lateinit var selectCarFragment: SelectCarFragment
 
     // drawer menu
     lateinit var toggle: ActionBarDrawerToggle
@@ -77,8 +78,16 @@ class MainActivity : AppCompatActivity() {
 
 
         // first fragment
-        homeFragment = HomeFragment.newInstance()
-        supportFragmentManager.beginTransaction().add(R.id.fragments_frame, homeFragment).commit()
+        val bundle:Bundle? = intent.extras
+        val fragmentName = bundle?.get("fragment").toString()
+        Log.d(TAG, "MainActivity - onCreate() fragment Name : $fragmentName")
+        if (fragmentName == "SelectCar") {
+            selectCarFragment = SelectCarFragment.newInstance()
+            supportFragmentManager.beginTransaction().add(R.id.fragments_frame, selectCarFragment).commit()
+        } else {
+            homeFragment = HomeFragment.newInstance()
+            supportFragmentManager.beginTransaction().add(R.id.fragments_frame, homeFragment).commit()
+        }
 
         // when click bottom navigation
         val onBottomNavItemSelectedListener = bottom_nav.setOnNavigationItemSelectedListener {

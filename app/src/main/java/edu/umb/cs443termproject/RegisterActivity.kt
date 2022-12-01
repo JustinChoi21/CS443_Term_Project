@@ -60,7 +60,8 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this, "Register Success!", Toast.LENGTH_LONG).show()
 
                     // move to select car
-                    var intent: Intent = Intent(this@RegisterActivity, SelectCarActivity::class.java)
+                    var intent: Intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                    intent.putExtra("fragment", "SelectCar")
                     startActivity(intent)
                     finish() // delete current activity, because we don't need to back to login activity
 
