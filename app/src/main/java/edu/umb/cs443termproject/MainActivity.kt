@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -108,8 +109,11 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        // todo: Logout https://youtu.be/xZthfQ9Elx4?t=2838
-        // var drawerLayout = findViewById()
+        // fab button
+        val fab: View = findViewById(R.id.floatingActionButton)
+        fab.setOnClickListener{ view ->
+            Log.d(TAG, "onCreate: fab button clicked!")
+        }
 
     }
 
