@@ -56,6 +56,13 @@ class MainActivity : AppCompatActivity() {
         // when click menu
         drawerMenu.setNavigationItemSelectedListener {
             when(it.itemId) {
+                R.id.drawer_menu_select_car -> {
+                    Log.d(TAG, "onCreate: drawer menu add your car clicked!")
+                    this.title = "Select Your Car"
+                    selectCarFragment = SelectCarFragment.newInstance()
+                    supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, selectCarFragment).commit()
+                }
+
                 R.id.logout -> {
                     Log.d(TAG, "onCreate: drawer menu logout clicked!")
                     mFirebaseAuth.signOut()
@@ -69,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                     finish() // delete current activity, because we don't need to back to login activity
                 }
             }
+            drawerLayout.closeDrawers() // drawer close
             true
         }
 
