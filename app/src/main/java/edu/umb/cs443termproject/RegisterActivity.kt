@@ -44,31 +44,38 @@ class RegisterActivity : AppCompatActivity() {
             var strEmail: String = mEtEmail.text.toString()
             val strPwd: String = mEtPwd.text.toString()
 
-            // todo: email & password null & empty check
+            // email & password null & empty check
+            if (strEmail.isNotEmpty() && strPwd.isNotEmpty()) {
 
-            mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(this) { task ->
-                if(task.isSuccessful) {
-                    Log.d(TAG, "onCreate: Register Success")
-                    val firebaseUser: FirebaseUser? = mFirebaseAuth.currentUser
-                    val account: UserAccount = UserAccount(firebaseUser?.email.toString(), strPwd,
-                        firebaseUser?.uid ?: "uid null"
-                    )
+                // firebase register
+                mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(this) { task ->
 
-                    mDatabaseReference.child("UserAccount").child(firebaseUser?.uid ?: "uid null")
-                        .setValue(account) // setValue = DB insert
+                    if(task.isSuccessful) {
+                        Log.d(TAG, "onCreate: Register Success")
+                        val firebaseUser: FirebaseUser? = mFirebaseAuth.currentUser
+                        val account: UserAccount = UserAccount(firebaseUser?.email.toString(), strPwd,
+                            firebaseUser?.uid ?: "uid null"
+                        )
 
-                    Toast.makeText(this, "Register Success!", Toast.LENGTH_LONG).show()
+                        mDatabaseReference.child("UserAccount").child(firebaseUser?.uid ?: "uid null")
+                            .setValue(account) // setValue = DB insert
 
-                    // move to select car
-                    var intent: Intent = Intent(this@RegisterActivity, MainActivity::class.java)
-                    intent.putExtra("fragment", "SelectCar")
-                    startActivity(intent)
-                    finish() // delete current activity, because we don't need to back to login activity
+                        Toast.makeText(this, "Register Success!", Toast.LENGTH_LONG).show()
 
-                } else {
-                    Log.d(TAG, "onCreate: Register Fail")
-                    Toast.makeText(this, "Register Failed.",Toast.LENGTH_LONG).show()
+                        // move to select car
+                        var intent: Intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                        intent.putExtra("fragment", "SelectCar")
+                        startActivity(intent)
+                        finish() // delete current activity, because we don't need to back to login activity
+
+                    } else {
+                        Log.d(TAG, "onCreate: Register Fail")
+                        Toast.makeText(this, "Register Failed.",Toast.LENGTH_LONG).show()
+                    }
                 }
+
+            } else { // email & password null & empty check
+                Toast.makeText(this, "Please Enter email & password.",Toast.LENGTH_LONG).show()
             }
         }
     }
