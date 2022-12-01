@@ -1,6 +1,7 @@
 package edu.umb.cs443termproject
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -42,6 +43,9 @@ class RegisterActivity : AppCompatActivity() {
             Log.d(TAG, "onCreate: mBtnRegister clicked!")
             var strEmail: String = mEtEmail.text.toString()
             val strPwd: String = mEtPwd.text.toString()
+
+            // todo: email & password null & empty check
+
             mFirebaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(this) { task ->
                 if(task.isSuccessful) {
                     Log.d(TAG, "onCreate: Register Success")
@@ -54,6 +58,11 @@ class RegisterActivity : AppCompatActivity() {
                         .setValue(account) // setValue = DB insert
 
                     Toast.makeText(this, "Register Success!", Toast.LENGTH_LONG).show()
+
+                    // move to select car
+                    var intent: Intent = Intent(this@RegisterActivity, SelectCarActivity::class.java)
+                    startActivity(intent)
+                    finish() // delete current activity, because we don't need to back to login activity
 
                 } else {
                     Log.d(TAG, "onCreate: Register Fail")
