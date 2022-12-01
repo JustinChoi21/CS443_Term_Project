@@ -13,10 +13,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import edu.umb.cs443termproject.fragments.HistoryFragment
-import edu.umb.cs443termproject.fragments.HomeFragment
-import edu.umb.cs443termproject.fragments.RemindersFragment
-import edu.umb.cs443termproject.fragments.StatsFragment
+import edu.umb.cs443termproject.fragments.*
 import edu.umb.cs443termproject.room.RoomHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.launch
@@ -32,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var historyFragment: HistoryFragment
     private lateinit var statsFragment: StatsFragment
     private lateinit var remindersFragment: RemindersFragment
+    private lateinit var inputFragment: InputFragment
 
     // drawer menu
     lateinit var toggle: ActionBarDrawerToggle
@@ -113,6 +111,8 @@ class MainActivity : AppCompatActivity() {
         val fab: View = findViewById(R.id.floatingActionButton)
         fab.setOnClickListener{ view ->
             Log.d(TAG, "onCreate: fab button clicked!")
+            inputFragment = InputFragment.newInstance()
+            supportFragmentManager.beginTransaction().add(R.id.fragments_frame, inputFragment).commit()
         }
 
     }
