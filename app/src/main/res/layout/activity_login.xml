@@ -7,8 +7,6 @@
     android:layout_height="match_parent">
 
     <!-- car image -->
-
-    <!-- input box -->
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
@@ -21,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- input box -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout_email"
         android:layout_width="match_parent"
@@ -71,9 +70,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <!-- buttons -->
-
     <Switch
         android:id="@+id/switch_stay_logged_in"
         android:layout_width="match_parent"
@@ -89,6 +85,8 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout_password"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 
+
+    <!-- buttons -->
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
