@@ -133,9 +133,10 @@ class MainActivity : AppCompatActivity() {
         // fab button
         val fab: View = findViewById(R.id.floatingActionButton)
         fab.setOnClickListener{ view ->
+            this.title = "Input Data"
             Log.d(TAG, "onCreate: fab button clicked!")
             inputFragment = InputFragment.newInstance()
-            supportFragmentManager.beginTransaction().add(R.id.fragments_frame, inputFragment).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, inputFragment).commit()
         }
 
     }
