@@ -7,8 +7,12 @@ import androidx.room.RoomDatabase
 
 @Database(entities = arrayOf(Login::class), version = 1, exportSchema = false)
 abstract class RoomHelper : RoomDatabase() {
-    abstract fun getLoginDao(): LoginDao
 
+    // DB table list
+    abstract fun getLoginDao(): LoginDao
+    abstract fun getCarDao(): CarDao
+
+    // Database instance
     companion object {
 
         @Volatile
