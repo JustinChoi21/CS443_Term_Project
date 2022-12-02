@@ -75,31 +75,40 @@ class LoginActivity : AppCompatActivity() {
             Log.d(RegisterActivity.TAG, "onCreate: mBtnLogin clicked!")
             var strEmail: String = mEtEmail.text.toString()
             val strPwd: String = mEtPwd.text.toString()
-            mFirebaseAuth.signInWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(this) { task ->
-                if(task.isSuccessful) {
-                    Log.d(RegisterActivity.TAG, "onCreate: Login Success")
 
-                    if(mSwitchStayLoggedIn.isChecked) {
-                        Log.d(TAG, "onCreate: Stay Logged In checked")
+            // email & password null & empty check
+            if (strEmail.isNotEmpty() && strPwd.isNotEmpty()) {
 
-                        // store stay logged in to Room database
-                        lifecycleScope.launch {
-                            var login = Login(strEmail, true)
-                            RoomHelper.getDatabase(this@LoginActivity).getLoginDao().addLogin(login)
-                            finish()
+                mFirebaseAuth.signInWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(this) { task ->
+                    if(task.isSuccessful) {
+                        Log.d(RegisterActivity.TAG, "onCreate: Login Success")
+
+                        if(mSwitchStayLoggedIn.isChecked) {
+                            Log.d(TAG, "onCreate: Stay Logged In checked")
+
+                            // store stay logged in to Room database
+                            lifecycleScope.launch {
+                                var login = Login(strEmail, true)
+                                RoomHelper.getDatabase(this@LoginActivity).getLoginDao().addLogin(login)
+                                finish()
+                            }
+
+                        } else {
+                            // todo: delete stay logged in on Room database
                         }
 
+                        var intent: Intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        finish() // delete current activity, because we don't need to back to login activity
+
                     } else {
-                        // todo: delete stay logged in on Room database
+                        Log.d(RegisterActivity.TAG, "onCreate: Login Failed!")
+                        Toast.makeText(this, "Login Failed.", Toast.LENGTH_LONG).show()
                     }
-
-                    var intent: Intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish() // delete current activity, because we don't need to back to login activity
-
-                } else {
-                    Toast.makeText(this, "Login Failed.", Toast.LENGTH_LONG).show()
                 }
+
+            } else { // email & password null & empty check
+                Toast.makeText(this, "Please Enter email & password.",Toast.LENGTH_LONG).show()
             }
         }
     } // onCreate End

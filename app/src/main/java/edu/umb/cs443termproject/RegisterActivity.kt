@@ -75,6 +75,7 @@ class RegisterActivity : AppCompatActivity() {
                 }
 
             } else { // email & password null & empty check
+                Log.d(RegisterActivity.TAG, "onCreate: Register Failed!")
                 Toast.makeText(this, "Please Enter email & password.",Toast.LENGTH_LONG).show()
             }
         }
