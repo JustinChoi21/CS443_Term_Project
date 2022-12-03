@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(Login::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(Login::class, Car::class), version = 1, exportSchema = false)
 abstract class RoomHelper : RoomDatabase() {
 
     // DB table list
@@ -20,11 +20,15 @@ abstract class RoomHelper : RoomDatabase() {
 
         fun getDatabase(context: Context) : RoomHelper {
             return INSTANCE ?: synchronized(this) {
+
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     RoomHelper::class.java,
                     "app_database"
-                ).build()
+                )
+                .fallbackToDestructiveMigration() // refer https://developer.android.com/training/data-storage/room/migrating-db-versions
+                .build()
+
                 INSTANCE = instance
                 instance
             }
