@@ -1,6 +1,5 @@
 package edu.umb.cs443termproject.adapter
 
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,18 +8,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
-import edu.umb.cs443termproject.data.SelectCarItems
+import edu.umb.cs443termproject.data.CarItems
 import edu.umb.cs443termproject.fragments.HomeFragment
 import edu.umb.cs443termproject.room.Car
 import edu.umb.cs443termproject.room.RoomHelper
 import kotlinx.coroutines.launch
 
-class SelectCarItemAdapter(val selectCarList: ArrayList<SelectCarItems>) : RecyclerView.Adapter<SelectCarItemAdapter.CustomViewHolder>() {
+class SelectCarItemAdapter(val selectCarList: ArrayList<CarItems>) : RecyclerView.Adapter<SelectCarItemAdapter.CustomViewHolder>() {
 
     companion object {
         const val TAG: String = "CS443"
@@ -33,7 +30,7 @@ class SelectCarItemAdapter(val selectCarList: ArrayList<SelectCarItems>) : Recyc
         return CustomViewHolder(view).apply {
             itemView.setOnClickListener{
                 val curPos : Int = adapterPosition
-                val selectCarItem : SelectCarItems = selectCarList.get(curPos)
+                val selectCarItem : CarItems = selectCarList.get(curPos)
 
                 Toast.makeText(parent.context,
                     "ManufacturerName: " + selectCarItem.ManufacturerName + " / model : " + selectCarItem.model,
@@ -61,8 +58,12 @@ class SelectCarItemAdapter(val selectCarList: ArrayList<SelectCarItems>) : Recyc
                 val activity = v!!.context as AppCompatActivity
 
                 // store selected car info
+                var icon: Int = selectCarList.get(position).icon
+                val manufacturer: String = selectCarList.get(position).ManufacturerName
+                val model: String = selectCarList.get(position).model
+
                 activity.lifecycleScope.launch{
-                    val car: Car = Car(selectCarList.get(position).ManufacturerName, selectCarList.get(position).model)
+                    val car = Car(icon, manufacturer, model)
                     RoomHelper.getDatabase(activity).getCarDao().addCar(car)
                 }
 

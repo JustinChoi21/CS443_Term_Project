@@ -11,12 +11,16 @@ class Car {
     var id: Int = 0
 
     @ColumnInfo
+    var icon: Int = 0
+
+    @ColumnInfo
     var manufacturer: String = ""
 
     @ColumnInfo
     var model: String = ""
 
-    constructor(manufacturer: String, model: String) {
+    constructor(icon: Int, manufacturer: String, model: String) {
+        this.icon = icon
         this.manufacturer = manufacturer
         this.model = model
     }

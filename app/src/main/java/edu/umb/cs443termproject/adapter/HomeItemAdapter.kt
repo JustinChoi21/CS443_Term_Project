@@ -9,9 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import edu.umb.cs443termproject.R
-import edu.umb.cs443termproject.data.SelectCarItems
+import edu.umb.cs443termproject.data.CarItems
 
-class HomeItemAdapter(val carList: ArrayList<SelectCarItems>) : RecyclerView.Adapter<HomeItemAdapter.CustomViewHolder>() {
+class HomeItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adapter<HomeItemAdapter.CustomViewHolder>() {
 
     companion object {
         const val TAG: String = "CS443"
@@ -24,7 +24,7 @@ class HomeItemAdapter(val carList: ArrayList<SelectCarItems>) : RecyclerView.Ada
         return CustomViewHolder(view).apply {
             itemView.setOnClickListener{
                 val curPos : Int = adapterPosition
-                val selectCarItem : SelectCarItems = carList.get(curPos)
+                val selectCarItem : CarItems = carList.get(curPos)
 
                 Toast.makeText(parent.context,
                     "ManufacturerName: " + selectCarItem.ManufacturerName + " / model : " + selectCarItem.model,
