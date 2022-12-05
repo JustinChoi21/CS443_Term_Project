@@ -4,12 +4,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.data.CarItems
+import edu.umb.cs443termproject.fragments.SelectCarFragment
 
 class HomeItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adapter<HomeItemAdapter.CustomViewHolder>() {
 
@@ -26,9 +29,9 @@ class HomeItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adapter<H
                 val curPos : Int = adapterPosition
                 val selectCarItem : CarItems = carList.get(curPos)
 
-                Toast.makeText(parent.context,
-                    "ManufacturerName: " + selectCarItem.ManufacturerName + " / model : " + selectCarItem.model,
-                    Toast.LENGTH_LONG).show()
+//                Toast.makeText(parent.context,
+//                    "ManufacturerName: " + selectCarItem.ManufacturerName + " / model : " + selectCarItem.model,
+//                    Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -44,9 +47,15 @@ class HomeItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adapter<H
             carList.get(position).ManufacturerName + " " + carList.get(position).model
 
         // store selected car info & move to homeFragment
-        holder.itemView.setOnClickListener(object :View.OnClickListener{
+        holder.btnChangeCar.setOnClickListener(object :View.OnClickListener{
             override fun onClick(v: View?) {
-                Log.d(TAG, "onClick: holder.itemView.setOnClickListener")
+                Log.d(TAG, "onClick: holder.btnChangeCar.setOnClickListener")
+
+                val activity = v!!.context as AppCompatActivity
+                activity.title = "Select Your Car"
+
+                val selectCarFragment = SelectCarFragment.newInstance()
+                activity.supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, selectCarFragment).commit()
             }
         })
 
@@ -55,6 +64,7 @@ class HomeItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adapter<H
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val icon = itemView.findViewById<ImageView>(R.id.iv_list_car_image)
         val manufacturer_model = itemView.findViewById<TextView>(R.id.tv_my_car_manufacturer_model)
+        var btnChangeCar = itemView.findViewById<Button>(R.id.btn_change_my_car)
     }
 
 }

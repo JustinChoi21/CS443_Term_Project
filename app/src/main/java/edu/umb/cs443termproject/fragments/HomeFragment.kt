@@ -45,7 +45,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // todo: retrieve car info
+        // retrieve car info
         lifecycleScope.launch {
             val activity = view.context as AppCompatActivity
             val carList: List<Car> = RoomHelper.getDatabase(activity).getCarDao().getAllCar()
@@ -53,10 +53,9 @@ class HomeFragment : Fragment() {
             if (carList.isNotEmpty()) {
                 Log.d(TAG, "onViewCreated: car model : " + carList.get(0).model)
 
-                    // retrieve first car
-                    val carArrayList: ArrayList<CarItems> = arrayListOf()
-                        carArrayList.add(CarItems(carList[0].icon, carList[0].manufacturer, carList[0].model))
-
+                // retrieve first car
+                val carArrayList: ArrayList<CarItems> = arrayListOf()
+                carArrayList.add(CarItems(carList[0].icon, carList[0].manufacturer, carList[0].model))
 
                 withContext(Dispatchers.Main) {
                     val recyclerView: RecyclerView = view.findViewById(R.id.rv_home)

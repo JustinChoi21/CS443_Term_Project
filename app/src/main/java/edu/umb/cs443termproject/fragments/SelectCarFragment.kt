@@ -38,7 +38,7 @@ class SelectCarFragment : Fragment() {
         // need to implement on a server
         val selectCarList = arrayListOf(
             CarItems(R.drawable.subaru_outback, "aston martin" , "DB11 V8"),
-            CarItems(R.drawable.subaru_outback, "aston martin" , "Vantage V8"),
+            CarItems(R.drawable.subaru_outback_big, "aston martin" , "Vantage V8"),
             CarItems(R.drawable.subaru_outback, "BMW" , "228i Gran Coupe"),
             CarItems(R.drawable.subaru_outback, "BMW" , "230i Coupe"),
             CarItems(R.drawable.subaru_outback, "FCA US LLC" , "Giulia"),
