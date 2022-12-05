@@ -38,7 +38,6 @@ class HomeFragment : Fragment() {
 
         val carList = arrayListOf(
             SelectCarItems(R.drawable.subaru_outback_big, "aston martin" , "DB11 V8"),
-            SelectCarItems(R.drawable.subaru_outback, "BMW" , "228i Gran Coupe"),
         )
 
         val recyclerView: RecyclerView = view.findViewById(R.id.rv_home)
