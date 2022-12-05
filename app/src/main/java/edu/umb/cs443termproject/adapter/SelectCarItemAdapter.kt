@@ -35,8 +35,6 @@ class SelectCarItemAdapter(val selectCarList: ArrayList<SelectCarItems>) : Recyc
                 val curPos : Int = adapterPosition
                 val selectCarItem : SelectCarItems = selectCarList.get(curPos)
 
-
-
                 Toast.makeText(parent.context,
                     "ManufacturerName: " + selectCarItem.ManufacturerName + " / model : " + selectCarItem.model,
                     Toast.LENGTH_LONG).show()
