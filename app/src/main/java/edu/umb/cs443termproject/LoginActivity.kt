@@ -1,8 +1,10 @@
 package edu.umb.cs443termproject
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Switch
@@ -46,11 +48,16 @@ class LoginActivity : AppCompatActivity() {
             }
             Log.d(TAG, "LoginActivity - onCreate() stayLoggedIn : $stayLoggedIn")
 
+            // UI Coroutine
             withContext(Dispatchers.Main) {
+
                 if(stayLoggedIn) {
                     var intent: Intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish() // delete current activity, because we don't need to back to login activity
+
+                } else {
+                    // should login
                 }
             }
         }
@@ -70,6 +77,11 @@ class LoginActivity : AppCompatActivity() {
         mEtPwd = findViewById(R.id.et_login_pwd)
         mBtnLogin = findViewById(R.id.btn_login)
         mSwitchStayLoggedIn = findViewById(R.id.switch_stay_logged_in)
+
+        // todo: keypad disappear
+        val mgr: InputMethodManager =
+            this@LoginActivity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mgr.hideSoftInputFromWindow(mEtPwd?.windowToken, 0)
 
         mBtnLogin.setOnClickListener {
             Log.d(RegisterActivity.TAG, "onCreate: mBtnLogin clicked!")
@@ -112,10 +124,5 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     } // onCreate End
-
-    fun moveToMainActivity() {
-
-    }
-
 
 }
