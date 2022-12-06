@@ -13,4 +13,12 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="input_fragment">Input Fragment</string>
+
+    <!-- drop-down event type -->
+    <string-array name="stringArray_eventType">
+        <item>Refuel</item>
+        <item>Change Engine Oil</item>
+        <item>Change Tire</item>
+        <item>Regular Service</item>
+    </string-array>
 </resources>

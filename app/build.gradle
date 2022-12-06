@@ -38,8 +38,9 @@ android {
     }
 
     // use data binding
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding true
+        viewBinding true
     }
 }
 
