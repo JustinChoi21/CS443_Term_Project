@@ -14,7 +14,9 @@ import edu.umb.cs443termproject.data.CarItems
 import edu.umb.cs443termproject.fragments.HomeFragment
 import edu.umb.cs443termproject.room.Car
 import edu.umb.cs443termproject.room.RoomHelper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.collections.ArrayList
@@ -70,11 +72,14 @@ class SelectCarItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adap
                 activity.lifecycleScope.launch{
                     val car = Car(icon, manufacturer, model, selectedDate)
                     RoomHelper.getDatabase(activity).getCarDao().addCar(car)
-                }
+                    Log.d(TAG, "SelectCarItemAdapter - add car " + car.manufacturer + " / " + car.model)
 
-                val homeFragment = HomeFragment.newInstance()
-                activity.supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, homeFragment)
-                    .addToBackStack(null).commit()
+                    withContext(Dispatchers.Main) {
+                        val homeFragment = HomeFragment.newInstance()
+                        activity.supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, homeFragment)
+                            .addToBackStack(null).commit()
+                    }
+                }
             }
         })
 

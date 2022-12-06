@@ -41,13 +41,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(TAG, "HomeFragment - onViewCreated() called!")
+
         // retrieve car info
         lifecycleScope.launch {
             val activity = view.context as AppCompatActivity
             val carList: List<Car> = RoomHelper.getDatabase(activity).getCarDao().getAllCar()
 
             if (carList.isNotEmpty()) {
-                Log.d(TAG, "onViewCreated: car model : " + carList.get(0).model)
+                Log.d(TAG, "onViewCreated: car model : " + carList.get(0).manufacturer + " / " + carList.get(0).model)
 
                 // retrieve first car
                 val carArrayList: ArrayList<SelectedCarItems> = arrayListOf()
