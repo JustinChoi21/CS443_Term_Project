@@ -13,10 +13,10 @@ interface CarDao {
     @Insert(onConflict = REPLACE) // if there is id conflict, it will be just updated
     suspend fun addCar(car: Car)
 
-    @Query("SELECT * FROM cars ORDER BY id DESC")
+    @Query("SELECT * FROM car ORDER BY id DESC")
     suspend fun getAllCar(): List<Car>
 
-    @Query("DELETE FROM cars")
+    @Query("DELETE FROM car")
     suspend fun deleteAllCar()
 
     @Update

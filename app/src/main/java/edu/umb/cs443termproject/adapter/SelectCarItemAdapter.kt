@@ -51,7 +51,7 @@ class SelectCarItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adap
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.icon.setImageResource(carList.get(position).icon)
         holder.manufacturer_model.text =
-            carList.get(position).ManufacturerName + " " + carList.get(position).model
+            carList.get(position).manufacturerName + " " + carList.get(position).model
 
         // store selected car info & move to homeFragment
         holder.itemView.setOnClickListener(object :View.OnClickListener{
@@ -63,14 +63,20 @@ class SelectCarItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adap
 
                 // store selected car info
                 var icon: Int = carList.get(position).icon
-                val manufacturer: String = carList.get(position).ManufacturerName
+                val manufacturer: String = carList.get(position).manufacturerName
                 val model: String = carList.get(position).model
+                val engineOil: Int = carList.get(position).engineOil
+                val fuelTank: Int = carList.get(position).fuelTank
+                val tire: Int = carList.get(position).tire
+                val regularService: Int = carList.get(position).regularService
+                val horsePower: Int = carList.get(position).horsePower
 
-                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
                 val selectedDate = LocalDateTime.now().format(formatter)
 
                 activity.lifecycleScope.launch{
-                    val car = Car(icon, manufacturer, model, selectedDate)
+                    val car = Car(icon, manufacturer, model, selectedDate, engineOil, fuelTank,
+                        tire, regularService, horsePower)
                     RoomHelper.getDatabase(activity).getCarDao().addCar(car)
                     Log.d(TAG, "SelectCarItemAdapter - add car " + car.manufacturer + " / " + car.model)
 
