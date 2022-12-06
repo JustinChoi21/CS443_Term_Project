@@ -11,14 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.umb.cs443termproject.R
-import edu.umb.cs443termproject.adapter.HistoryItemAdapter
 import edu.umb.cs443termproject.adapter.HomeItemAdapter
-import edu.umb.cs443termproject.data.HistoryItems
-import edu.umb.cs443termproject.data.CarItems
+import edu.umb.cs443termproject.data.SelectedCarItems
 import edu.umb.cs443termproject.room.Car
-import edu.umb.cs443termproject.room.Login
 import edu.umb.cs443termproject.room.RoomHelper
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -54,8 +50,13 @@ class HomeFragment : Fragment() {
                 Log.d(TAG, "onViewCreated: car model : " + carList.get(0).model)
 
                 // retrieve first car
-                val carArrayList: ArrayList<CarItems> = arrayListOf()
-                carArrayList.add(CarItems(carList[0].icon, carList[0].manufacturer, carList[0].model))
+                val carArrayList: ArrayList<SelectedCarItems> = arrayListOf()
+                carArrayList.add(SelectedCarItems(
+                    carList[0].icon,
+                    carList[0].manufacturer,
+                    carList[0].model,
+                    carList[0].selectedDate)
+                )
 
                 withContext(Dispatchers.Main) {
                     val recyclerView: RecyclerView = view.findViewById(R.id.rv_home)

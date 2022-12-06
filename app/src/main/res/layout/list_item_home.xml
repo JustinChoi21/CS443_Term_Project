@@ -60,7 +60,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="24dp"
                     android:layout_marginBottom="8dp"
-                    android:text="Subaru Outback"
                     android:textSize="18dp"
                     android:textColor="#000000"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_list_icon_car"
@@ -83,12 +82,11 @@
             app:srcCompat="@drawable/subaru_outback_big" />
 
             <TextView
-                android:id="@+id/tv_my_car_description"
+                android:id="@+id/tv_my_car_selectedDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="18dp"
                 android:paddingEnd="18dp"
-                android:text="This car is elected by 10.22.2022 17:50"
                 android:textColor="#000000"
                 app:layout_constraintTop_toBottomOf="@+id/iv_list_car_image"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.adapter.SelectCarItemAdapter
 import edu.umb.cs443termproject.data.CarItems
+import edu.umb.cs443termproject.data.SelectedCarItems
 
 class SelectCarFragment : Fragment() {
 
@@ -36,7 +37,7 @@ class SelectCarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // need to implement on a server
-        val selectCarList = arrayListOf(
+        val carList = arrayListOf(
             CarItems(R.drawable.subaru_outback, "aston martin" , "DB11 V8"),
             CarItems(R.drawable.subaru_outback_big, "aston martin" , "Vantage V8"),
             CarItems(R.drawable.subaru_outback, "BMW" , "228i Gran Coupe"),
@@ -92,6 +93,6 @@ class SelectCarFragment : Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.rv_select_car)
         recyclerView.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.VERTICAL, false)
         recyclerView.setHasFixedSize(true) // it makes good performance
-        recyclerView.adapter = SelectCarItemAdapter(selectCarList)
+        recyclerView.adapter = SelectCarItemAdapter(carList)
     }
 }

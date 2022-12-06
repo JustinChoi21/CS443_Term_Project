@@ -19,10 +19,13 @@ class Car {
     @ColumnInfo
     var model: String = ""
 
-    constructor(icon: Int, manufacturer: String, model: String) {
+    @ColumnInfo
+    var selectedDate: String = ""
+
+    constructor(icon: Int, manufacturer: String, model: String, selectedDate: String) {
         this.icon = icon
         this.manufacturer = manufacturer
         this.model = model
+        this.selectedDate = selectedDate
     }
-
 }

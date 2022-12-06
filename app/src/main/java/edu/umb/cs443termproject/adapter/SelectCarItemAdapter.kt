@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
@@ -16,8 +15,11 @@ import edu.umb.cs443termproject.fragments.HomeFragment
 import edu.umb.cs443termproject.room.Car
 import edu.umb.cs443termproject.room.RoomHelper
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import kotlin.collections.ArrayList
 
-class SelectCarItemAdapter(val selectCarList: ArrayList<CarItems>) : RecyclerView.Adapter<SelectCarItemAdapter.CustomViewHolder>() {
+class SelectCarItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adapter<SelectCarItemAdapter.CustomViewHolder>() {
 
     companion object {
         const val TAG: String = "CS443"
@@ -25,29 +27,29 @@ class SelectCarItemAdapter(val selectCarList: ArrayList<CarItems>) : RecyclerVie
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectCarItemAdapter.CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_select_car, parent, false)
-        // return CustomViewHolder(view)
+        return CustomViewHolder(view)
 
-        return CustomViewHolder(view).apply {
-            itemView.setOnClickListener{
-                val curPos : Int = adapterPosition
-                val selectCarItem : CarItems = selectCarList.get(curPos)
-
-                Toast.makeText(parent.context,
-                    "ManufacturerName: " + selectCarItem.ManufacturerName + " / model : " + selectCarItem.model,
-                    Toast.LENGTH_LONG).show()
-            }
-        }
+//        return CustomViewHolder(view).apply {
+//            itemView.setOnClickListener{
+//                val curPos : Int = adapterPosition
+//                val selectCarItem : CarItems = selectCarList.get(curPos)
+//
+//                Toast.makeText(parent.context,
+//                    "ManufacturerName: " + selectCarItem.ManufacturerName + " / model : " + selectCarItem.model,
+//                    Toast.LENGTH_LONG).show()
+//            }
+//        }
     }
 
     override fun getItemCount(): Int {
-        return selectCarList.size
+        return carList.size
     }
 
     // called when we scroll or use the list
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
-        holder.icon.setImageResource(selectCarList.get(position).icon)
+        holder.icon.setImageResource(carList.get(position).icon)
         holder.manufacturer_model.text =
-            selectCarList.get(position).ManufacturerName + " " + selectCarList.get(position).model
+            carList.get(position).ManufacturerName + " " + carList.get(position).model
 
         // store selected car info & move to homeFragment
         holder.itemView.setOnClickListener(object :View.OnClickListener{
@@ -58,12 +60,15 @@ class SelectCarItemAdapter(val selectCarList: ArrayList<CarItems>) : RecyclerVie
                 val activity = v!!.context as AppCompatActivity
 
                 // store selected car info
-                var icon: Int = selectCarList.get(position).icon
-                val manufacturer: String = selectCarList.get(position).ManufacturerName
-                val model: String = selectCarList.get(position).model
+                var icon: Int = carList.get(position).icon
+                val manufacturer: String = carList.get(position).ManufacturerName
+                val model: String = carList.get(position).model
+
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val selectedDate = LocalDateTime.now().format(formatter)
 
                 activity.lifecycleScope.launch{
-                    val car = Car(icon, manufacturer, model)
+                    val car = Car(icon, manufacturer, model, selectedDate)
                     RoomHelper.getDatabase(activity).getCarDao().addCar(car)
                 }
 
