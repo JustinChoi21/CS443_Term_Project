@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var remindersFragment: RemindersFragment
     private lateinit var inputFragment: InputFragment
     private lateinit var selectCarFragment: SelectCarFragment
+    private lateinit var fab: View
 
     // drawer menu
     lateinit var toggle: ActionBarDrawerToggle
@@ -101,6 +102,7 @@ class MainActivity : AppCompatActivity() {
 
         // when click bottom navigation
         val onBottomNavItemSelectedListener = bottom_nav.setOnNavigationItemSelectedListener {
+            fab.visibility = View.VISIBLE
             when(it.itemId){
                 R.id.homeFragment -> {
                     this.title = "Home"
@@ -131,8 +133,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // fab button
-        val fab: View = findViewById(R.id.floatingActionButton)
+        fab = findViewById(R.id.floatingActionButton)
         fab.setOnClickListener{ view ->
+            fab.visibility = View.GONE
             this.title = "Input Data"
             Log.d(TAG, "onCreate: fab button clicked!")
             inputFragment = InputFragment.newInstance()

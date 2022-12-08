@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import edu.umb.cs443termproject.extentions.hideKeyboard
 import edu.umb.cs443termproject.room.RoomHelper
 import edu.umb.cs443termproject.room.Login
 import kotlinx.coroutines.CoroutineScope
@@ -65,11 +66,13 @@ class LoginActivity : AppCompatActivity() {
         // register button click -> move to Register activity
         val btnRegister: Button = findViewById(R.id.btn_move_to_register)
         btnRegister.setOnClickListener {
+            hideKeyboard()
             var intent: Intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
 
-        // login button click
+
+        // login prepare
         mFirebaseAuth = FirebaseAuth.getInstance()
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("CS443") // string to unify firebase ref
 
@@ -78,12 +81,17 @@ class LoginActivity : AppCompatActivity() {
         mBtnLogin = findViewById(R.id.btn_login)
         mSwitchStayLoggedIn = findViewById(R.id.switch_stay_logged_in)
 
-        // todo: keypad disappear
-        val mgr: InputMethodManager =
-            this@LoginActivity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        mgr.hideSoftInputFromWindow(mEtPwd?.windowToken, 0)
 
+        // when switch is checked hide keyboard
+        mSwitchStayLoggedIn.setOnCheckedChangeListener { buttonView, isChecked ->
+            hideKeyboard()
+        }
+
+
+        // login button click
         mBtnLogin.setOnClickListener {
+            hideKeyboard()
+
             Log.d(RegisterActivity.TAG, "onCreate: mBtnLogin clicked!")
             var strEmail: String = mEtEmail.text.toString()
             val strPwd: String = mEtPwd.text.toString()

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.databinding.FragmentInputBinding
 import edu.umb.cs443termproject.room.History
@@ -132,6 +133,10 @@ class InputFragment : Fragment() {
                             .commit()
                         (activity as AppCompatActivity).supportActionBar?.title = "History"
                         (activity as AppCompatActivity).bottom_nav.menu.getItem(1).isChecked = true
+
+                        // show floating action button
+                        val fab = (activity as MainActivity).findViewById<View>(R.id.floatingActionButton)
+                        fab.visibility = View.VISIBLE
                     }
                 }
             }
