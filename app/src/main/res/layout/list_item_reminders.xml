@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.0">
 
         <ImageView
-            android:id="@+id/iv_list_icon_history"
+            android:id="@+id/iv_list_icon_refuel_reminder"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="8dp"
@@ -32,7 +32,7 @@
             app:srcCompat="@drawable/list_icon_fuel" />
 
         <TextView
-            android:id="@+id/tv_event_type"
+            android:id="@+id/tv_refuel_reminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -42,8 +42,8 @@
             android:textColor="#000000"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/tv_event_description"
-            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_history"
-            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_history" />
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_refuel_reminder"
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_refuel_reminder" />
 
         <TextView
             android:id="@+id/tv_event_date"
@@ -54,7 +54,7 @@
             android:textColor="#000000"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_history" />
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_refuel_reminder" />
 
         <TextView
             android:id="@+id/tv_event_description"
@@ -66,8 +66,8 @@
             android:text="Date: 10/25/2022, Fuel: 30L, Type: Regular"
             android:textColor="#000000"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_list_icon_history"
-            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_history"
-            app:layout_constraintTop_toBottomOf="@+id/tv_event_type" />
+            app:layout_constraintBottom_toBottomOf="@+id/iv_list_icon_refuel_reminder"
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_refuel_reminder"
+            app:layout_constraintTop_toBottomOf="@+id/tv_refuel_reminder" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

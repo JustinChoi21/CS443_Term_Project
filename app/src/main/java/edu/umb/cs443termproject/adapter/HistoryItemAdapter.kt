@@ -40,8 +40,8 @@ class HistoryItemAdapter(val historyList: ArrayList<HistoryItems>) : RecyclerVie
     }
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val icon = itemView.findViewById<ImageView>(R.id.iv_list_icon_history)
-        val eventType = itemView.findViewById<TextView>(R.id.tv_event_type)
+        val icon = itemView.findViewById<ImageView>(R.id.iv_list_icon_refuel_reminder)
+        val eventType = itemView.findViewById<TextView>(R.id.tv_refuel_reminder)
         val eventDate = itemView.findViewById<TextView>(R.id.tv_event_date)
         val eventDescription = itemView.findViewById<TextView>(R.id.tv_event_description)
     }

@@ -1,15 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_reminders"
+    <!-- Refuel reminder -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_RefuelReminder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_list_icon_refuel_reminder"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/list_icon_fuel" />
+
+        <TextView
+            android:id="@+id/tv_refuel_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Refuel Reminder"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_refuel_reminder_description"
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_refuel_reminder"
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_refuel_reminder" />
+
+        <Switch
+            android:id="@+id/switch_refuel_reminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="38dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_refuel_reminder"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/tv_refuel_reminder_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Refuel your car on 12/12/2020"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_list_icon_refuel_reminder"
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_refuel_reminder"
+            app:layout_constraintTop_toBottomOf="@+id/tv_refuel_reminder" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Engine Oil Change reminder -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_EngineOilChangeReminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_RefuelReminder">
+
+        <ImageView
+            android:id="@+id/iv_list_icon_engine_oil_reminder"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/list_icon_oil" />
+
+        <TextView
+            android:id="@+id/tv_engine_oil_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Engine Oil Reminder"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_engine_oil_reminder_description"
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_engine_oil_reminder"
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_engine_oil_reminder" />
+
+        <Switch
+            android:id="@+id/switch_engine_oil_reminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="38dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_engine_oil_reminder"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/tv_engine_oil_reminder_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Change engine oil on 12/12/2020"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_list_icon_engine_oil_reminder"
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_engine_oil_reminder"
+            app:layout_constraintTop_toBottomOf="@+id/tv_engine_oil_reminder" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Tire Change reminder -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_TireChangeReminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_EngineOilChangeReminder">
+
+        <ImageView
+            android:id="@+id/iv_list_icon_tire_reminder"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/list_icon_tire" />
+
+        <TextView
+            android:id="@+id/tv_tire_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Tire Change Reminder"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_tire_reminder_description"
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_tire_reminder"
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_tire_reminder" />
+
+        <Switch
+            android:id="@+id/switch_tire_reminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="38dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_tire_reminder"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/tv_tire_reminder_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Change tire on 12/12/2020"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_list_icon_tire_reminder"
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_tire_reminder"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tire_reminder" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Regular Service reminder -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_RegularServiceReminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_TireChangeReminder">
+
+        <ImageView
+            android:id="@+id/iv_list_icon_regular_service_reminder"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/list_icon_oil" />
+
+        <TextView
+            android:id="@+id/tv_regular_service_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Regular Service Reminder"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_tire_reminder_description"
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_regular_service_reminder"
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_regular_service_reminder" />
+
+        <Switch
+            android:id="@+id/switch_regular_service_reminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="38dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_list_icon_regular_service_reminder"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <TextView
+            android:id="@+id/tv_regular_service_reminder_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Change tire on 12/12/2020"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_list_icon_regular_service_reminder"
+            app:layout_constraintStart_toEndOf="@+id/iv_list_icon_regular_service_reminder"
+            app:layout_constraintTop_toBottomOf="@+id/tv_regular_service_reminder" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

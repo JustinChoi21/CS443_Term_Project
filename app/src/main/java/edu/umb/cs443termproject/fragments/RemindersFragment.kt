@@ -72,14 +72,7 @@ class RemindersFragment : Fragment() {
                 }
 
                 withContext(Dispatchers.Main) {
-                    val recyclerView: RecyclerView = view.findViewById(R.id.rv_reminders)
-                    recyclerView.layoutManager = LinearLayoutManager(
-                        this@RemindersFragment.context,
-                        LinearLayoutManager.VERTICAL,
-                        false
-                    )
-                    recyclerView.setHasFixedSize(true) // it makes good performance
-                    recyclerView.adapter = HistoryItemAdapter(historyArrayList)
+
                 }
 
             } else {
