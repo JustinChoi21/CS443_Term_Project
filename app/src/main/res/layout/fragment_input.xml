@@ -7,8 +7,8 @@
     tools:context=".fragments.InputFragment">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/textInputLayout_input_eventType"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -29,36 +29,50 @@
             android:text="Refuel" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <DatePicker
-        android:id="@+id/date_picker_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout_1"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:id="@+id/textInputLayout_input_date"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:hint="Name"
-        app:counterEnabled="true"
-        app:counterMaxLength="20"
-        app:endIconMode="password_toggle"
-        app:helperText="Required*"
-        app:helperTextTextColor="#FF0000"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:hint="Date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:startIconDrawable="@drawable/ic_baseline_person_24">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_input_eventType"
+        app:startIconDrawable="@drawable/ic_baseline_date_range_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_1"
+            android:id="@+id/et_date_input"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:inputType="date"
+            android:text="01/01/2022"
+            android:focusable="false"
+            android:clickable="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout_input_eventDescription"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Description"
+        app:counterEnabled="true"
+        app:counterMaxLength="100"
+        app:helperTextTextColor="#FF0000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout_input_date"
+        app:startIconDrawable="@drawable/ic_baseline_edit_note_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_description_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLength="20"

@@ -5,17 +5,19 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
-import edu.umb.cs443termproject.MainActivity
+import androidx.fragment.app.setFragmentResult
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DatePickerFragment: DialogFragment(), DatePickerDialog.OnDateSetListener {
 
+    private val calendar = Calendar.getInstance()
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Use the current date as the default date in the picker
-        val c = Calendar.getInstance()
-        val year = c.get(Calendar.YEAR)
-        val month = c.get(Calendar.MONTH)
-        val day = c.get(Calendar.DAY_OF_MONTH)
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         // Create a new instance of DatePickerDialog and return it
         return DatePickerDialog(
@@ -28,7 +30,12 @@ class DatePickerFragment: DialogFragment(), DatePickerDialog.OnDateSetListener {
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        TODO("Not yet implemented")
+        calendar.set(year, month, dayOfMonth)
+
+        val selectedDate = SimpleDateFormat("MM/dd/yyyy", Locale.US).format(calendar.time)
+        val selectedDateBundle = Bundle()
+        selectedDateBundle.putString("SELECTED_DATE", selectedDate)
+        setFragmentResult("REQUEST_KEY", selectedDateBundle)
     }
 
 }
