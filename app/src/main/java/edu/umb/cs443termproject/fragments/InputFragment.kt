@@ -45,6 +45,44 @@ class InputFragment : Fragment() {
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_event_type_item, eventTypes)
         binding.autoTvDropdownEventType.setAdapter(arrayAdapter)
 
+        // when select event type, set input field
+        binding.autoTvDropdownEventType.setOnItemClickListener { parent, view, position, id ->
+            val eventType = parent.getItemAtPosition(position).toString()
+            when (eventType) {
+                "Refuel" -> {
+                    // show fuel amount & price input field
+                    binding.textInputLayoutInputFuelAmount.visibility = View.VISIBLE
+                    binding.etFuelAmountInput.visibility = View.VISIBLE
+                    binding.textInputLayoutInputFuelPrice.visibility = View.VISIBLE
+                    binding.etFuelPriceInput.visibility = View.VISIBLE
+                }
+
+                "Change Engine Oil" -> {
+                    // hidden fuel amount & price input field
+                    binding.textInputLayoutInputFuelAmount.visibility = View.GONE
+                    binding.etFuelAmountInput.visibility = View.GONE
+                    binding.textInputLayoutInputFuelPrice.visibility = View.GONE
+                    binding.etFuelPriceInput.visibility = View.GONE
+                }
+
+                "Change Tire" -> {
+                    // hidden fuel amount & price input field
+                    binding.textInputLayoutInputFuelAmount.visibility = View.GONE
+                    binding.etFuelAmountInput.visibility = View.GONE
+                    binding.textInputLayoutInputFuelPrice.visibility = View.GONE
+                    binding.etFuelPriceInput.visibility = View.GONE
+                }
+
+                "Regular Service" -> {
+                    // hidden fuel amount & price input field
+                    binding.textInputLayoutInputFuelAmount.visibility = View.GONE
+                    binding.etFuelAmountInput.visibility = View.GONE
+                    binding.textInputLayoutInputFuelPrice.visibility = View.GONE
+                    binding.etFuelPriceInput.visibility = View.GONE
+                }
+            }
+        }
+
         // set etDateInput to today's date
         val today = java.util.Calendar.getInstance().time
         val dateFormat = java.text.SimpleDateFormat("MM/dd/yyyy", java.util.Locale.US)
@@ -75,7 +113,7 @@ class InputFragment : Fragment() {
         binding.btnSaveInput.setOnClickListener {
             val eventType = binding.autoTvDropdownEventType.text.toString()
             val date = binding.etDateInput.text.toString()
-            val description = binding.etDescriptionInput.text.toString()
+            val description = binding.etNoteInput.text.toString()
 
             // store to history table of Room database
             val history = History(eventType, date, description)
