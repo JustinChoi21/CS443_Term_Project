@@ -114,9 +114,11 @@ class InputFragment : Fragment() {
             val eventType = binding.autoTvDropdownEventType.text.toString()
             val date = binding.etDateInput.text.toString()
             val description = binding.etNoteInput.text.toString()
+            val fuelAmount = binding.etFuelAmountInput.text.toString().toInt()
+            val fuelPrice = binding.etFuelPriceInput.text.toString().toInt()
 
             // store to history table of Room database
-            val history = History(eventType, date, description)
+            val history = History(eventType, date, description, fuelAmount, fuelPrice)
             lifecycleScope.launch {
                 (activity as AppCompatActivity).application.let {
                     RoomHelper.getDatabase(it).getHistoryDao().addHistory(history)

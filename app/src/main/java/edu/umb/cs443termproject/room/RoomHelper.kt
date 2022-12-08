@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(Login::class, Car::class, History::class), version = 9, exportSchema = false)
+@Database(entities = arrayOf(Login::class, Car::class, History::class), version = 10, exportSchema = false)
 abstract class RoomHelper : RoomDatabase() {
 
     // DB table list
