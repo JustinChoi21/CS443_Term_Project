@@ -7,17 +7,18 @@
     tools:context=".fragments.InputFragment">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Event Type"
-        app:startIconDrawable="@drawable/ic_baseline_directions_car_24"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
+        android:hint="Event Type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconDrawable="@drawable/ic_baseline_directions_car_24">
 
         <AutoCompleteTextView
             android:id="@+id/auto_tv_dropdown_eventType"
@@ -27,6 +28,16 @@
             android:inputType="none"
             android:text="Refuel" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <DatePicker
+        android:id="@+id/date_picker_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout_1"
