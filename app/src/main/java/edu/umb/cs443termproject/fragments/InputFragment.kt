@@ -6,9 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.databinding.FragmentInputBinding
+import edu.umb.cs443termproject.room.History
+import edu.umb.cs443termproject.room.RoomHelper
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class InputFragment : Fragment() {
 
@@ -60,6 +68,33 @@ class InputFragment : Fragment() {
 
             // show the date picker dialog
             datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+        }
+
+
+        // When click button btn_save_input, show the result
+        binding.btnSaveInput.setOnClickListener {
+            val eventType = binding.autoTvDropdownEventType.text.toString()
+            val date = binding.etDateInput.text.toString()
+            val description = binding.etDescriptionInput.text.toString()
+
+            // store to history table of Room database
+            val history = History(eventType, date, description)
+            lifecycleScope.launch {
+                (activity as AppCompatActivity).application.let {
+                    RoomHelper.getDatabase(it).getHistoryDao().addHistory(history)
+
+                    // move to history fragment
+                    withContext(Dispatchers.Main) {
+                        val historyFragment = HistoryFragment.newInstance()
+                        (activity as AppCompatActivity).supportFragmentManager.beginTransaction()
+                            .replace(R.id.fragments_frame, historyFragment)
+                            .addToBackStack(null)
+                            .commit()
+                        (activity as AppCompatActivity).supportActionBar?.title = "History"
+                        (activity as AppCompatActivity).bottom_nav.menu.getItem(1).isChecked = true
+                    }
+                }
+            }
         }
 
 

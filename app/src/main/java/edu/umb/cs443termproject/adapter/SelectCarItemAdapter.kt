@@ -14,6 +14,7 @@ import edu.umb.cs443termproject.data.CarItems
 import edu.umb.cs443termproject.fragments.HomeFragment
 import edu.umb.cs443termproject.room.Car
 import edu.umb.cs443termproject.room.RoomHelper
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -58,9 +59,6 @@ class SelectCarItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adap
             override fun onClick(v: View?) {
                 Log.d(TAG, "onClick: holder.itemView.setOnClickListener")
 
-                // move to homeFragment
-                val activity = v!!.context as AppCompatActivity
-
                 // store selected car info
                 var icon: Int = carList.get(position).icon
                 val manufacturer: String = carList.get(position).manufacturerName
@@ -74,16 +72,21 @@ class SelectCarItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adap
                 val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
                 val selectedDate = LocalDateTime.now().format(formatter)
 
+                val car = Car(icon, manufacturer, model, selectedDate, engineOil, fuelTank,
+                    tire, regularService, horsePower)
+
+                val activity = v!!.context as AppCompatActivity
                 activity.lifecycleScope.launch{
-                    val car = Car(icon, manufacturer, model, selectedDate, engineOil, fuelTank,
-                        tire, regularService, horsePower)
                     RoomHelper.getDatabase(activity).getCarDao().addCar(car)
                     Log.d(TAG, "SelectCarItemAdapter - add car " + car.manufacturer + " / " + car.model)
 
+                    // move to homeFragment
                     withContext(Dispatchers.Main) {
                         val homeFragment = HomeFragment.newInstance()
                         activity.supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, homeFragment)
                             .addToBackStack(null).commit()
+                        activity.supportActionBar?.title = "Home"
+                        activity.bottom_nav.menu.getItem(0).isChecked = true
                     }
                 }
             }
