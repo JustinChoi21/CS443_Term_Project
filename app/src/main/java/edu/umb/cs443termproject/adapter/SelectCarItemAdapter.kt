@@ -1,5 +1,6 @@
 package edu.umb.cs443termproject.adapter
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -49,7 +50,7 @@ class SelectCarItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adap
     }
 
     // called when we scroll or use the list
-    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CustomViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.icon.setImageResource(carList.get(position).icon)
         holder.manufacturer_model.text =
             carList.get(position).manufacturerName + " " + carList.get(position).model
