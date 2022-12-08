@@ -13,7 +13,7 @@ interface HistoryDao {
     @Insert(onConflict = REPLACE) // if there is id conflict, it will be just updated
     suspend fun addHistory(history : History)
 
-    @Query("SELECT * FROM history ORDER BY id DESC")
+    @Query("SELECT * FROM history ORDER BY eventDate DESC, id DESC")
     suspend fun getAllHistory(): List<History>
 
     @Query("DELETE FROM history")

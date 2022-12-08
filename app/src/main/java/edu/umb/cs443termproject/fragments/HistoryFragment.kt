@@ -61,12 +61,12 @@ class HistoryFragment : Fragment() {
                 for (history in historyList) {
 
                     // eventType icon
-                    var icon: Int = R.drawable.list_icon_fuel
-                    when (history.eventType) {
+                    var icon: Int = when (history.eventType) {
                         "Refuel" -> R.drawable.list_icon_fuel
-                        "Engine Oil" -> R.drawable.list_icon_oil
-                        "Tire" -> R.drawable.list_icon_tire
-                        "Service" -> R.drawable.list_icon_service
+                        "Change Engine Oil" -> R.drawable.list_icon_oil
+                        "Change Tire" -> R.drawable.list_icon_tire
+                        "Regular Service" -> R.drawable.list_icon_service
+                        else -> R.drawable.list_icon_fuel
                     }
 
                     historyArrayList.add(
