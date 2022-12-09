@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.adapter.HistoryItemAdapter
 import edu.umb.cs443termproject.data.HistoryItems
@@ -41,6 +42,11 @@ class RemindersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // hide floating action button
+        val fab = (activity as MainActivity).findViewById<View>(R.id.floatingActionButton)
+        fab.visibility = View.GONE
+
+        // retrieve data from database
         lifecycleScope.launch {
             val activity = view.context as AppCompatActivity
             val historyList: List<History> =

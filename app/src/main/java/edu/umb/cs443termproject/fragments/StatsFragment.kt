@@ -10,6 +10,7 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
+import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
 import kotlinx.android.synthetic.main.fragment_stats.*
 
@@ -36,6 +37,10 @@ class StatsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(HomeFragment.TAG, "RemindersFragment - onViewCreated() called")
 
+        // hide floating action button
+        val fab = (activity as MainActivity).findViewById<View>(R.id.floatingActionButton)
+        fab.visibility = View.GONE
+
         // bar chart
         val barChart = activity?.findViewById<BarChart>(R.id.barChart)
         val list: ArrayList<BarEntry> = ArrayList()
@@ -55,8 +60,21 @@ class StatsFragment : Fragment() {
         val barDataSet = BarDataSet(list, "Fuel Consumption")
         val data = BarData(barDataSet)
         barChart?.data = data
-        barChart?.description?.text = "Bar Chart Example"
+        barChart?.description?.text = "Fuel Consumption"
+        barChart?.setFitBars(true)
         barChart?.animateY(200)
+
+        // barchart x axis
+        barChart?.xAxis?.setDrawLabels(true)
+        barChart?.xAxis?.setDrawAxisLine(true)
+        barChart?.xAxis?.setDrawGridLines(true)
+        barChart?.xAxis?.setDrawLimitLinesBehindData(true)
+
+        // barchart y axis
+        barChart?.axisLeft?.setDrawLabels(true)
+        barChart?.axisLeft?.setDrawAxisLine(true)
+        barChart?.axisLeft?.setDrawGridLines(true)
+        barChart?.axisLeft?.setDrawLimitLinesBehindData(true)
 
     }
 }
