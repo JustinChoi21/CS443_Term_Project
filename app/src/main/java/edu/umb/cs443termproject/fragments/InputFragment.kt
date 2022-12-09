@@ -9,9 +9,12 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.internal.ViewUtils.hideKeyboard
 import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.databinding.FragmentInputBinding
+import edu.umb.cs443termproject.extentions.hideKeyboard
+import edu.umb.cs443termproject.extentions.toastMessage
 import edu.umb.cs443termproject.room.History
 import edu.umb.cs443termproject.room.RoomHelper
 import kotlinx.android.synthetic.main.activity_main.*
@@ -109,9 +112,39 @@ class InputFragment : Fragment() {
             datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
         }
 
+        // when fuel price input field not focus, hide keyboard
+        binding.etFuelPriceInput.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                (activity as AppCompatActivity).hideKeyboard()
+            }
+        }
+
+        // when save button focused, hide keyboard
+        binding.btnSaveInput.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                (activity as AppCompatActivity).hideKeyboard()
+            }
+        }
 
         // When click button btn_save_input, show the result
         binding.btnSaveInput.setOnClickListener {
+
+            // hide keyboard
+            (activity as AppCompatActivity).hideKeyboard()
+
+            // empty input field check
+            if (binding.etFuelAmountInput.text?.isEmpty()!!) {
+                // Toast message
+                (activity as MainActivity).toastMessage("Please enter fuel amount")
+                return@setOnClickListener
+            }
+
+            if (binding.etFuelPriceInput.text?.isEmpty()!!) {
+                // Toast message
+                (activity as MainActivity).toastMessage("Please enter fuel price")
+                return@setOnClickListener
+            }
+
             val eventType = binding.autoTvDropdownEventType.text.toString()
             val date = binding.etDateInput.text.toString()
             val description = binding.etNoteInput.text.toString()
