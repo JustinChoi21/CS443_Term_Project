@@ -49,7 +49,7 @@
             android:id="@+id/switch_refuel_reminder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="38dp"
+            android:layout_marginEnd="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +115,7 @@
             android:id="@+id/switch_engine_oil_reminder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="38dp"
+            android:layout_marginEnd="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -181,7 +181,7 @@
             android:id="@+id/switch_tire_reminder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="38dp"
+            android:layout_marginEnd="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -226,7 +226,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/list_icon_oil" />
+            app:srcCompat="@drawable/list_icon_service" />
 
         <TextView
             android:id="@+id/tv_regular_service_reminder"
@@ -239,7 +239,7 @@
             android:textColor="#000000"
             android:textSize="18dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/tv_tire_reminder_description"
+            app:layout_constraintBottom_toTopOf="@+id/tv_regular_service_reminder_description"
             app:layout_constraintStart_toEndOf="@+id/iv_list_icon_regular_service_reminder"
             app:layout_constraintTop_toTopOf="@+id/iv_list_icon_regular_service_reminder" />
 
@@ -247,7 +247,7 @@
             android:id="@+id/switch_regular_service_reminder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="38dp"
+            android:layout_marginEnd="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"

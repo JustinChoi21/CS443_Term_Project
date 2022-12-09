@@ -84,4 +84,7 @@ dependencies {
     // Add the dependencies for any other desired Firebase products
     // refer https://firebase.google.com/docs/android/setup#available-libraries
 
+    // chart library for android
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 }
