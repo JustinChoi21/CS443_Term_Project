@@ -57,10 +57,10 @@ class StatsFragment : Fragment() {
         list.add(BarEntry(11f, 110f))
         list.add(BarEntry(12f, 120f))
 
-        val barDataSet = BarDataSet(list, "Fuel Consumption")
+        val barDataSet = BarDataSet(list, "Fuel Consumption (Gallon)")
         val data = BarData(barDataSet)
         barChart?.data = data
-        barChart?.description?.text = "Fuel Consumption (Gallon)"
+        barChart?.description?.text = ""
         barChart?.setFitBars(true)
         barChart?.animateY(200)
 
