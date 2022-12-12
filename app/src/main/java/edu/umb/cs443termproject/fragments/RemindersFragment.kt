@@ -90,7 +90,7 @@ class RemindersFragment : Fragment() {
                 .setContentIntent(pendingIntent) // set pending intent
 
             // send the notification
-            notificationManager.notify(1, notificationBuilder.build())
+            notificationManager.notify(1001, notificationBuilder.build())
         }
 
         return inflater.inflate(R.layout.fragment_reminders, container, false)
