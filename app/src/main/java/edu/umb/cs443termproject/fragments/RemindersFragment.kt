@@ -69,10 +69,40 @@ class RemindersFragment : Fragment() {
             if (isChecked) {
                 Log.d(TAG, "Refuel reminder is on")
                 val title = "CS443 Reminder"
-                val message = "You have a reminder to refuel your car."
+                val message = "Your refuel reminder is on. This reminder will notify you to refuel on the target date."
                 notificationHelper.showNotification(title, message)
             } else {
                 Log.d(TAG, "Refuel reminder is off")
+            }
+        }
+        switchEngineOilReminder.setOnCheckedChangeListener() { _, isChecked ->
+            if (isChecked) {
+                Log.d(TAG, "Engine oil reminder is on")
+                val title = "CS443 Reminder"
+                val message = "Your engine oil reminder is on. This reminder will notify you to change engine oil on the target date."
+                notificationHelper.showNotification(title, message)
+            } else {
+                Log.d(TAG, "Engine oil reminder is off")
+            }
+        }
+        switchTireReminder.setOnCheckedChangeListener() { _, isChecked ->
+            if (isChecked) {
+                Log.d(TAG, "Tire reminder is on")
+                val title = "CS443 Reminder"
+                val message = "Your tire reminder is on. This reminder will notify you to change tire on the target date."
+                notificationHelper.showNotification(title, message)
+            } else {
+                Log.d(TAG, "Tire reminder is off")
+            }
+        }
+        switchRegularServiceReminder.setOnCheckedChangeListener() { _, isChecked ->
+            if (isChecked) {
+                Log.d(TAG, "Regular service reminder is on")
+                val title = "CS443 Reminder"
+                val message = "Your regular service reminder is on. This reminder will notify you to do regular service on the target date."
+                notificationHelper.showNotification(title, message)
+            } else {
+                Log.d(TAG, "Regular service reminder is off")
             }
         }
 
