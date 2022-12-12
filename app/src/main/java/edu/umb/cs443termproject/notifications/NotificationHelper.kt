@@ -16,9 +16,12 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
     private val channelName = "CS443ChannelName"
 
     init {
+
+        // Notification Channel is only exist in API 26+ (Android Oreo or higher version)))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannels()
         }
+
     }
 
     private fun createChannels() {
