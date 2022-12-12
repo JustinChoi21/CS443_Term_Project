@@ -3,6 +3,7 @@ package edu.umb.cs443termproject.fragments
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,12 +14,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import edu.umb.cs443termproject.LoginActivity
 import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
-import edu.umb.cs443termproject.adapter.HistoryItemAdapter
 import edu.umb.cs443termproject.data.HistoryItems
 import edu.umb.cs443termproject.notifications.NotificationHelper
 import edu.umb.cs443termproject.room.History
@@ -26,6 +24,7 @@ import edu.umb.cs443termproject.room.RoomHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
 
 class RemindersFragment : Fragment() {
 
@@ -57,7 +56,18 @@ class RemindersFragment : Fragment() {
         val intent = Intent(context, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+
+        // refer: https://stackoverflow.com/questions/67045607/how-to-resolve-missing-pendingintent-mutability-flag-lint-warning-in-android-a
+        var pendingIntent: PendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(
+                context,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        } else {
+            PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
 
         // create a notification
         var notificationBuilder = NotificationCompat.Builder(requireContext(), NotificationHelper.CHANNEL_ID)
