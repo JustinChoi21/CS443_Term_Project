@@ -3,10 +3,13 @@ package edu.umb.cs443termproject.notifications
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import edu.umb.cs443termproject.LoginActivity
 import edu.umb.cs443termproject.R
 
 class NotificationHelper(base: Context?) : ContextWrapper(base) {
@@ -40,11 +43,26 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
 
     // setting Notification
     fun getChannelNotification(title: String, body: String): NotificationCompat.Builder {
+
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            )
+        } else {
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
         return NotificationCompat.Builder(applicationContext, channelID)
             .setContentTitle(title)
             .setContentText(body)
             .setSmallIcon(R.drawable.ic_baseline_directions_car_24)
             .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
     }
 
 }
