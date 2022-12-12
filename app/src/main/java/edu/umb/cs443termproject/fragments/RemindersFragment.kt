@@ -1,19 +1,26 @@
 package edu.umb.cs443termproject.fragments
 
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import edu.umb.cs443termproject.LoginActivity
 import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.adapter.HistoryItemAdapter
 import edu.umb.cs443termproject.data.HistoryItems
+import edu.umb.cs443termproject.notifications.NotificationHelper
 import edu.umb.cs443termproject.room.History
 import edu.umb.cs443termproject.room.RoomHelper
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +43,36 @@ class RemindersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.d(HomeFragment.TAG, "RemindersFragment - onCreateView() called")
+
+        // register the notification channel
+        val notificationManager: NotificationManager = NotificationHelper.createNotificationChannel(
+            requireContext(),
+            NotificationManagerCompat.IMPORTANCE_DEFAULT,
+            false,
+            getString(R.string.app_name),
+            "App notification channel."
+        )
+
+        // set pending intent
+        val intent = Intent(context, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+
+        // create a notification
+        var notificationBuilder = NotificationCompat.Builder(requireContext(), NotificationHelper.CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle("Reminder")
+            .setContentText("Your car is due for an oil change.")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setStyle(NotificationCompat.BigTextStyle()
+                .bigText("Your car is due for an oil change."))
+            .setAutoCancel(true) // Set the notification to auto cancel when tapped.
+            .setContentIntent(pendingIntent) // set pending intent
+
+        // send the notification
+        notificationManager.notify(1, notificationBuilder.build())
+
         return inflater.inflate(R.layout.fragment_reminders, container, false)
     }
 
