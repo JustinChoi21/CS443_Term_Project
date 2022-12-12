@@ -5,10 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Switch
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
@@ -131,6 +128,15 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please Enter email & password.",Toast.LENGTH_LONG).show()
             }
         }
+
+        // forgot password link
+        val tvForgotPassword = findViewById<TextView>(R.id.tv_forgot_password_link)
+        tvForgotPassword.setOnClickListener() {
+            hideKeyboard()
+            var intent: Intent = Intent(this, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
+
     } // onCreate End
 
 }
