@@ -49,57 +49,9 @@ class RemindersFragment : Fragment() {
 
         // initialize notificationHelper
         notificationHelper = NotificationHelper(context)
-        val title: String = "CS443 Reminder"
-        val message: String = "You have a reminder to take your medicine"
+        val title = "CS443 Reminder"
+        val message = "You have a reminder to change your car engine oil."
         showNotification(title, message)
-
-//        val CHANNEL_ID = "CS443 channel id"
-//        val APP_NAME = R.string.app_name.toString()
-//
-//        // Safety checked the OS version for API 26 and greater.
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//
-//            // Created a notification channel for this app.
-//            val channel = NotificationChannel(CHANNEL_ID, APP_NAME, NotificationManager.IMPORTANCE_DEFAULT).apply {
-//                this.description = description
-//                this.setShowBadge(true)
-//            }
-//
-//            // register the notification channel by passing it to the NotificationManager.createNotificationChannel() method
-//            val notificationManager: NotificationManager = requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            notificationManager.createNotificationChannel(channel)
-//
-//            // set pending intent
-//            val intent = Intent(context, LoginActivity::class.java).apply {
-//                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//            }
-//
-//            // refer: https://stackoverflow.com/questions/67045607/how-to-resolve-missing-pendingintent-mutability-flag-lint-warning-in-android-a
-//            var pendingIntent: PendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//                PendingIntent.getActivity(
-//                    context,
-//                    0,
-//                    intent,
-//                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-//                )
-//            } else {
-//                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-//            }
-//
-//            // create a notification
-//            var notificationBuilder = NotificationCompat.Builder(requireContext(), CHANNEL_ID)
-//                .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                .setContentTitle("Reminder")
-//                .setContentText("Your car is due for an oil change.")
-//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//                .setStyle(NotificationCompat.BigTextStyle()
-//                    .bigText("Your car is due for an oil change."))
-//                .setAutoCancel(true) // Set the notification to auto cancel when tapped.
-//                .setContentIntent(pendingIntent) // set pending intent
-//
-//            // send the notification
-//            notificationManager.notify(1001, notificationBuilder.build())
-//        }
 
         return inflater.inflate(R.layout.fragment_reminders, container, false)
     }

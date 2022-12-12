@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import edu.umb.cs443termproject.R
 
 class NotificationHelper(base: Context?) : ContextWrapper(base) {
 
@@ -21,18 +22,17 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
     }
 
     private fun createChannels() {
-        val channel = NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_DEFAULT)
+        val channel = NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH)
         channel.enableLights(true)
         channel.enableVibration(true)
         channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
 
         getManager().createNotificationChannel(channel)
-
     }
 
     // Create NotificationManager
     fun getManager(): NotificationManager {
-        return getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        return getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
     // setting Notification
@@ -40,7 +40,7 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
         return NotificationCompat.Builder(applicationContext, channelID)
             .setContentTitle(title)
             .setContentText(body)
-            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setSmallIcon(R.drawable.ic_baseline_directions_car_24)
             .setAutoCancel(true)
     }
 
