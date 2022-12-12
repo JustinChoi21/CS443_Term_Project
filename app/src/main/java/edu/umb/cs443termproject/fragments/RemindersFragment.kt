@@ -15,6 +15,7 @@ import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.data.HistoryItems
 import edu.umb.cs443termproject.notifications.NotificationHelper
 import edu.umb.cs443termproject.room.History
+import edu.umb.cs443termproject.room.Reminder
 import edu.umb.cs443termproject.room.RoomHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -56,54 +57,90 @@ class RemindersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+
         // initialize notificationHelper
         notificationHelper = NotificationHelper(context)
 
+
+        // retrieve the switch conditions from the database & set the switch status
         switchRefuelReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_refuel_reminder)
         switchEngineOilReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_engine_oil_reminder)
         switchTireReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_tire_reminder)
         switchRegularServiceReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_regular_service_reminder)
 
+        val activity = view.context as AppCompatActivity
+        lifecycleScope.launch {
+            val reminderList : List<Reminder> = RoomHelper.getDatabase(activity).getReminderDao().getAllReminders()
+            if(reminderList.isNotEmpty()) {
+                withContext(Dispatchers.Main) {
+                    switchRefuelReminder.isChecked = reminderList[0].refuel == 1
+                    switchEngineOilReminder.isChecked = reminderList[0].engineOil == 1
+                    switchTireReminder.isChecked = reminderList[0].tire == 1
+                    switchRegularServiceReminder.isChecked = reminderList[0].regularService == 1
+                }
+            } else {
+                // add reminder data to the database
+                val reminder = Reminder(0, 0, 0, 0)
+                RoomHelper.getDatabase(activity).getReminderDao().addReminder(reminder)
+            }
+        }
+
+
         // set switch event listener
-        switchRefuelReminder.setOnCheckedChangeListener() { _, isChecked ->
+        val title = "CS443 Reminder"
+
+        switchRefuelReminder.setOnClickListener() {
+            val isChecked = switchRefuelReminder.isChecked
             if (isChecked) {
                 Log.d(TAG, "Refuel reminder is on")
-                val title = "CS443 Reminder"
                 val message = "Your refuel reminder is on. This reminder will notify you to refuel on the target date."
                 notificationHelper.showNotification(title, message)
+                switchRefuelReminder.isChecked = true
             } else {
                 Log.d(TAG, "Refuel reminder is off")
+                switchRefuelReminder.isChecked = false
             }
+            updateReminderStatus()
         }
-        switchEngineOilReminder.setOnCheckedChangeListener() { _, isChecked ->
+        switchEngineOilReminder.setOnClickListener() {
+            val isChecked = switchEngineOilReminder.isChecked
             if (isChecked) {
                 Log.d(TAG, "Engine oil reminder is on")
-                val title = "CS443 Reminder"
                 val message = "Your engine oil reminder is on. This reminder will notify you to change engine oil on the target date."
                 notificationHelper.showNotification(title, message)
+                switchEngineOilReminder.isChecked = true
             } else {
                 Log.d(TAG, "Engine oil reminder is off")
+                switchEngineOilReminder.isChecked = false
             }
+            updateReminderStatus()
         }
-        switchTireReminder.setOnCheckedChangeListener() { _, isChecked ->
+        switchTireReminder.setOnClickListener() {
+            val isChecked = switchTireReminder.isChecked
             if (isChecked) {
                 Log.d(TAG, "Tire reminder is on")
-                val title = "CS443 Reminder"
                 val message = "Your tire reminder is on. This reminder will notify you to change tire on the target date."
                 notificationHelper.showNotification(title, message)
+                switchTireReminder.isChecked = true
             } else {
                 Log.d(TAG, "Tire reminder is off")
+                switchTireReminder.isChecked = false
             }
+            updateReminderStatus()
         }
-        switchRegularServiceReminder.setOnCheckedChangeListener() { _, isChecked ->
+        switchRegularServiceReminder.setOnClickListener() {
+            val isChecked = switchRegularServiceReminder.isChecked
             if (isChecked) {
                 Log.d(TAG, "Regular service reminder is on")
-                val title = "CS443 Reminder"
                 val message = "Your regular service reminder is on. This reminder will notify you to do regular service on the target date."
                 notificationHelper.showNotification(title, message)
+                switchRegularServiceReminder.isChecked = true
             } else {
                 Log.d(TAG, "Regular service reminder is off")
+                switchRegularServiceReminder.isChecked = false
             }
+            updateReminderStatus()
         }
 
         // hide floating action button
@@ -153,4 +190,17 @@ class RemindersFragment : Fragment() {
             }
         }
     } // onViewCreated() End
+
+
+    private fun updateReminderStatus() {
+        val refuel = if(switchRefuelReminder.isChecked) 1 else 0
+        val engineOil = if(switchEngineOilReminder.isChecked) 1 else 0
+        val tire = if(switchTireReminder.isChecked) 1 else 0
+        val regularService = if(switchRegularServiceReminder.isChecked) 1 else 0
+
+        val reminder = Reminder(refuel, engineOil, tire, regularService)
+        lifecycleScope.launch {
+            RoomHelper.getDatabase(context as AppCompatActivity).getReminderDao().updateReminder(reminder)
+        }
+    }
 }

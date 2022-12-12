@@ -5,13 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(Login::class, Car::class, History::class), version = 10, exportSchema = false)
+@Database(entities = arrayOf(Login::class, Car::class, History::class, Reminder::class), version = 11, exportSchema = false)
 abstract class RoomHelper : RoomDatabase() {
 
     // DB table list
     abstract fun getLoginDao(): LoginDao
     abstract fun getCarDao(): CarDao
     abstract fun getHistoryDao(): HistoryDao
+    abstract fun getReminderDao(): ReminderDao
 
     // Database instance
     companion object {
@@ -34,20 +35,5 @@ abstract class RoomHelper : RoomDatabase() {
                 instance
             }
         }
-
-
-//        private val LOCK = Any()
-//
-//        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
-//            instance ?: buildDatabase(context).also {
-//                instance = it
-//            }
-//        }
-//
-//        private fun buildDatabase(context: Context) = Room.databaseBuilder(
-//            context.applicationContext,
-//            AppDatabase::class.java,
-//            "app-database"
-//        ).build()
     }
 }
