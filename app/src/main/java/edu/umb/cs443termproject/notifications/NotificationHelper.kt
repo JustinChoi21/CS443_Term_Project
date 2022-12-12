@@ -19,7 +19,6 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
     private val channelName = "CS443ChannelName"
 
     init {
-
         // Notification Channel is only exist in API 26+ (Android Oreo or higher version)))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannels()
@@ -63,6 +62,13 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
             .setSmallIcon(R.drawable.ic_baseline_directions_car_24)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
+    }
+
+    fun showNotification(title: String, message: String) {
+        val nb: NotificationCompat.Builder =
+            this.getChannelNotification(title, message)
+
+            this.getManager().notify(1004, nb.build())
     }
 
 }

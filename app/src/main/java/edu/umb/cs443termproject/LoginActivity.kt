@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
 
 
         // when switch is checked hide keyboard
-        mSwitchStayLoggedIn.setOnCheckedChangeListener { buttonView, isChecked ->
+        mSwitchStayLoggedIn.setOnCheckedChangeListener { _, isChecked ->
             hideKeyboard()
         }
 

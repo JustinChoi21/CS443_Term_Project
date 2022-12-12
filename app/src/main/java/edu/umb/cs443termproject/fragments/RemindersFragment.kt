@@ -1,22 +1,15 @@
 package edu.umb.cs443termproject.fragments
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.os.Build
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import edu.umb.cs443termproject.LoginActivity
 import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.data.HistoryItems
@@ -39,6 +32,14 @@ class RemindersFragment : Fragment() {
     }
 
     private lateinit var notificationHelper: NotificationHelper
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private lateinit var switchRefuelReminder: Switch
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private lateinit var switchEngineOilReminder: Switch
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private lateinit var switchTireReminder: Switch
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    private lateinit var switchRegularServiceReminder: Switch
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,24 +48,33 @@ class RemindersFragment : Fragment() {
     ): View? {
         Log.d(HomeFragment.TAG, "RemindersFragment - onCreateView() called")
 
-        // initialize notificationHelper
-        notificationHelper = NotificationHelper(context)
-        val title = "CS443 Reminder"
-        val message = "You have a reminder to change your car engine oil."
-        showNotification(title, message)
-
         return inflater.inflate(R.layout.fragment_reminders, container, false)
     }
 
-    private fun showNotification(title: String, message: String) {
-        val nb: NotificationCompat.Builder =
-            notificationHelper.getChannelNotification(title, message)
 
-        notificationHelper.getManager().notify(1, nb.build())
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // initialize notificationHelper
+        notificationHelper = NotificationHelper(context)
+
+        switchRefuelReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_refuel_reminder)
+        switchEngineOilReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_engine_oil_reminder)
+        switchTireReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_tire_reminder)
+        switchRegularServiceReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_regular_service_reminder)
+
+        // set switch event listener
+        switchRefuelReminder.setOnCheckedChangeListener() { _, isChecked ->
+            if (isChecked) {
+                Log.d(TAG, "Refuel reminder is on")
+                val title = "CS443 Reminder"
+                val message = "You have a reminder to refuel your car."
+                notificationHelper.showNotification(title, message)
+            } else {
+                Log.d(TAG, "Refuel reminder is off")
+            }
+        }
 
         // hide floating action button
         val fab = (activity as MainActivity).findViewById<View>(R.id.floatingActionButton)
