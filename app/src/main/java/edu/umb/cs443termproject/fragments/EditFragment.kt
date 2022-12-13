@@ -71,8 +71,17 @@ class EditFragment : Fragment() {
                 binding.etEventTypeEdit.setText(history.eventType)
                 binding.etDateEdit.setText(history.eventDate)
                 binding.etNoteEdit.setText(history.eventDescription)
-                binding.etFuelAmountEdit.setText(history.fuelAmount.toString())
-                binding.etFuelPriceEdit.setText(history.fuelPrice.toString())
+
+                // if event type is "refuel", set fuel amount and fuel price edit text visible
+                if (history.eventType == EventType.Refuel.toString()) {
+                    binding.textInputLayoutEditFuelAmount.visibility = View.VISIBLE
+                    binding.textInputLayoutEditFuelPrice.visibility = View.VISIBLE
+                    binding.etFuelAmountEdit.setText(history.fuelAmount.toString())
+                    binding.etFuelPriceEdit.setText(history.fuelPrice.toString())
+                } else {
+                    binding.textInputLayoutEditFuelAmount.visibility = View.GONE
+                    binding.textInputLayoutEditFuelPrice.visibility = View.GONE
+                }
             }
         }
 
