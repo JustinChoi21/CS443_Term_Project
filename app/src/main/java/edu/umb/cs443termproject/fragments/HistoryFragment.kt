@@ -154,7 +154,7 @@ class HistoryFragment : Fragment() {
                     History(EventType.Tire.value, "12/01/22", "At Service center & price $100", 0, 0),
                     History(EventType.RegularService.value, "12/01/22", "At Service center & price $120", 0, 0),
                     History(EventType.Refuel.value, "11/13/22", "Fuel Amount: 25Gal & Price: $75", 25, 75),
-                    History(EventType.Refuel.value, "10/15/22", "Fuel Amount: 15Gal & Price: $45", 15, 45),
+                    History(EventType.Refuel.value, "10/15/22", "Fuel Amount: 20Gal & Price: $60", 20, 60),
                     History(EventType.Refuel.value, "09/20/22", "Fuel Amount: 15Gal & Price: $45", 15, 45),
                     History(EventType.Refuel.value, "08/21/22", "Fuel Amount: 20Gal & Price: $60", 20, 60),
                     History(EventType.EngineOil.value, "08/12/22", "At service center & price $50", 0, 0),
