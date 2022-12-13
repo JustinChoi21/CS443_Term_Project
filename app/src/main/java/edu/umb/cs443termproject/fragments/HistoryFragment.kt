@@ -1,10 +1,14 @@
 package edu.umb.cs443termproject.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -91,9 +95,20 @@ class HistoryFragment : Fragment() {
                 }
 
             } else {
+                Log.d(TAG, "onViewCreated: history is empty")
 
-                // todo: no history data
-                Log.d(HomeFragment.TAG, "onViewCreated: no history data")
+                // add textview to show no history data
+                val textView = TextView(activity)
+                textView.text = "No History Data"
+                textView.textSize = 20f
+                textView.gravity = Gravity.CENTER
+                textView.setTextColor(Color.BLACK)
+                textView.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+                (view as ViewGroup).addView(textView)
+
 
             }
         }
