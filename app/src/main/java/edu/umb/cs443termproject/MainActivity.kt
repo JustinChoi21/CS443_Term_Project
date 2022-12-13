@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var remindersFragment: RemindersFragment
     private lateinit var inputFragment: InputFragment
     private lateinit var selectCarFragment: SelectCarFragment
+    private lateinit var editFragment: EditFragment
     private lateinit var fab: View
 
     // drawer menu
@@ -94,6 +95,7 @@ class MainActivity : AppCompatActivity() {
             this.title = "Select Your Car"
             selectCarFragment = SelectCarFragment.newInstance()
             supportFragmentManager.beginTransaction().add(R.id.fragments_frame, selectCarFragment).commit()
+
         } else {
             this.title = "Home"
             homeFragment = HomeFragment.newInstance()

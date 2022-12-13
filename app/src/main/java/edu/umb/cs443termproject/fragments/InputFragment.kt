@@ -41,7 +41,7 @@ class InputFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG, "HomeFragment - onCreateView() called")
+        Log.d(TAG, "InputFragment - onCreateView() called")
 
         _binding = FragmentInputBinding.inflate(inflater, container, false)
 

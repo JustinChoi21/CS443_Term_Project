@@ -171,6 +171,7 @@ class RemindersFragment : Fragment() {
 
                     historyArrayList.add(
                         HistoryItems(
+                            history.id,
                             icon,
                             history.eventType,
                             history.eventDate,
@@ -182,6 +183,7 @@ class RemindersFragment : Fragment() {
                 }
 
                 withContext(Dispatchers.Main) {
+                    // todo: set reminder date & alarm
 
                 }
 

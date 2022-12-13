@@ -77,6 +77,7 @@ class HistoryFragment : Fragment() {
 
                     historyArrayList.add(
                         HistoryItems(
+                            history.id,
                             icon,
                             history.eventType,
                             history.eventDate,
@@ -143,36 +144,28 @@ class HistoryFragment : Fragment() {
 
                 // create dummy data for testing
                 val historyList = arrayListOf(
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "12/12/22", "Fuel Amount: 10Gal, Price: $30", 10, 30),
-                    HistoryItems(R.drawable.list_icon_oil, EventType.EngineOil.value, "12/12/22", "At service center, price $50", 0, 0),
-                    HistoryItems(R.drawable.list_icon_tire, EventType.Tire.value, "12/12/22", "At Service center, price $100", 0, 0),
-                    HistoryItems(R.drawable.list_icon_service, EventType.RegularService.value, "12/12/22", "At Service center, price $120", 0, 0),
+                    History(EventType.Refuel.value, "12/12/22", "Fuel Amount: 10Gal & Price: $30", 10, 30),
+                    History(EventType.EngineOil.value, "12/12/22", "At service center & price $50", 0, 0),
+                    History(EventType.Tire.value, "12/12/22", "At Service center & price $100", 0, 0),
+                    History(EventType.RegularService.value, "12/12/22", "At Service center & price $120", 0, 0),
 
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "12/01/22", "Fuel Amount: 5Gal, Price: $15", 5, 15),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "11/13/22", "Fuel Amount: 25Gal, Price: $75", 25, 75),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "10/15/22", "Fuel Amount: 15Gal, Price: $45", 15, 45),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "09/20/22", "Fuel Amount: 15Gal, Price: $45", 15, 45),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "08/21/22", "Fuel Amount: 20Gal, Price: $60", 20, 60),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "07/10/22", "Fuel Amount: 25Gal, Price: $75", 25, 75),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "06/11/22", "Fuel Amount: 23Gal, Price: $69", 23, 69),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "05/15/22", "Fuel Amount: 18Gal, Price: $54", 18, 54),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "04/15/22", "Fuel Amount: 14Gal, Price: $42", 14, 42),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "03/15/22", "Fuel Amount: 21Gal, Price: $63", 21, 63),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "02/11/22", "Fuel Amount: 19Gal, Price: $57", 19, 57),
-                    HistoryItems(R.drawable.list_icon_fuel, EventType.Refuel.value, "01/23/22", "Fuel Amount: 12Gal, Price: $36", 12, 36),
+                    History(EventType.Refuel.value, "12/01/22", "Fuel Amount: 5Gal & Price: $15", 5, 15),
+                    History(EventType.Refuel.value, "11/13/22", "Fuel Amount: 25Gal & Price: $75", 25, 75),
+                    History(EventType.Refuel.value, "10/15/22", "Fuel Amount: 15Gal & Price: $45", 15, 45),
+                    History(EventType.Refuel.value, "09/20/22", "Fuel Amount: 15Gal & Price: $45", 15, 45),
+                    History(EventType.Refuel.value, "08/21/22", "Fuel Amount: 20Gal & Price: $60", 20, 60),
+                    History(EventType.Refuel.value, "07/10/22", "Fuel Amount: 25Gal & Price: $75", 25, 75),
+                    History(EventType.Refuel.value, "06/11/22", "Fuel Amount: 23Gal & Price: $69", 23, 69),
+                    History(EventType.Refuel.value, "05/15/22", "Fuel Amount: 18Gal & Price: $54", 18, 54),
+                    History(EventType.Refuel.value, "04/15/22", "Fuel Amount: 14Gal & Price: $42", 14, 42),
+                    History(EventType.Refuel.value, "03/15/22", "Fuel Amount: 21Gal & Price: $63", 21, 63),
+                    History(EventType.Refuel.value, "02/11/22", "Fuel Amount: 19Gal & Price: $57", 19, 57),
+                    History(EventType.Refuel.value, "01/23/22", "Fuel Amount: 12Gal & Price: $36", 12, 36),
                 )
 
                 // add dummy data to database
                 for (history in historyList) {
-                    RoomHelper.getDatabase(activity).getHistoryDao().addHistory(
-                        History(
-                            history.eventType,
-                            history.eventDate,
-                            history.eventDescription,
-                            history.fuelAmount,
-                            history.fuelPrice
-                        )
-                    )
+                    RoomHelper.getDatabase(activity).getHistoryDao().addHistory(history)
                 }
 
                 // Refresh this fragment

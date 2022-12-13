@@ -1,14 +1,21 @@
 package edu.umb.cs443termproject.adapter
 
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.data.HistoryItems
+import edu.umb.cs443termproject.fragments.EditFragment
+import edu.umb.cs443termproject.fragments.HistoryFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 class HistoryItemAdapter(val historyList: ArrayList<HistoryItems>) : RecyclerView.Adapter<HistoryItemAdapter.CustomViewHolder>() {
 
@@ -20,9 +27,24 @@ class HistoryItemAdapter(val historyList: ArrayList<HistoryItems>) : RecyclerVie
             itemView.setOnClickListener{
                 val curPos : Int = adapterPosition
                 val historyItem : HistoryItems = historyList.get(curPos)
-                Toast.makeText(parent.context,
-                    "type: " + historyItem.eventType + " / description : " + historyItem.eventDescription,
-                    Toast.LENGTH_LONG).show()
+
+                // replace this fragment to EditFragment with historyItem
+                val bundle:Bundle = Bundle()
+                bundle.putInt("historyId", historyItem.id)
+                val editFragment = EditFragment.newInstance()
+                editFragment.arguments = bundle
+
+                val activity = parent.context as AppCompatActivity
+                (activity as AppCompatActivity).supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragments_frame, editFragment)
+                    .addToBackStack(null)
+                    .commit()
+                (activity as AppCompatActivity).supportActionBar?.title = "Edit/Remove History"
+                (activity as AppCompatActivity).bottom_nav.menu.getItem(1).isChecked = true
+
+                // hide floating action button
+                val fab = (activity as MainActivity).findViewById<View>(R.id.floatingActionButton)
+                fab.visibility = View.GONE
             }
         }
     }
