@@ -17,8 +17,8 @@
     <!-- drop-down event type -->
     <string-array name="stringArray_eventType">
         <item>Refuel</item>
-        <item>Change Engine Oil</item>
-        <item>Change Tire</item>
+        <item>Engine Oil Change</item>
+        <item>Tire Change</item>
         <item>Regular Service</item>
     </string-array>
 </resources>

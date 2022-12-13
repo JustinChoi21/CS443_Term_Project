@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
+import edu.umb.cs443termproject.data.EventType
 import edu.umb.cs443termproject.data.HistoryItems
 import edu.umb.cs443termproject.notifications.NotificationHelper
 import edu.umb.cs443termproject.room.History
@@ -161,10 +162,10 @@ class RemindersFragment : Fragment() {
 
                     // eventType icon
                     var icon: Int = when (history.eventType) {
-                        "Refuel" -> R.drawable.list_icon_fuel
-                        "Change Engine Oil" -> R.drawable.list_icon_oil
-                        "Change Tire" -> R.drawable.list_icon_tire
-                        "Regular Service" -> R.drawable.list_icon_service
+                        EventType.Refuel.value -> R.drawable.list_icon_fuel
+                        EventType.EngineOil.value -> R.drawable.list_icon_oil
+                        EventType.Tire.value -> R.drawable.list_icon_tire
+                        EventType.RegularService.value -> R.drawable.list_icon_service
                         else -> R.drawable.list_icon_fuel
                     }
 
@@ -173,7 +174,9 @@ class RemindersFragment : Fragment() {
                             icon,
                             history.eventType,
                             history.eventDate,
-                            history.eventDescription
+                            history.eventDescription,
+                            history.fuelAmount,
+                            history.fuelPrice
                         )
                     )
                 }

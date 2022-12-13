@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.internal.ViewUtils.hideKeyboard
 import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
+import edu.umb.cs443termproject.data.EventType
 import edu.umb.cs443termproject.databinding.FragmentInputBinding
 import edu.umb.cs443termproject.extentions.hideKeyboard
 import edu.umb.cs443termproject.extentions.toastMessage
@@ -53,7 +54,7 @@ class InputFragment : Fragment() {
         binding.autoTvDropdownEventType.setOnItemClickListener { parent, view, position, id ->
             val eventType = parent.getItemAtPosition(position).toString()
             when (eventType) {
-                "Refuel" -> {
+                EventType.Refuel.value -> {
                     // show fuel amount & price input field
                     binding.textInputLayoutInputFuelAmount.visibility = View.VISIBLE
                     binding.etFuelAmountInput.visibility = View.VISIBLE
@@ -61,7 +62,7 @@ class InputFragment : Fragment() {
                     binding.etFuelPriceInput.visibility = View.VISIBLE
                 }
 
-                "Change Engine Oil" -> {
+                EventType.EngineOil.value -> {
                     // hidden fuel amount & price input field
                     binding.textInputLayoutInputFuelAmount.visibility = View.GONE
                     binding.etFuelAmountInput.visibility = View.GONE
@@ -69,7 +70,7 @@ class InputFragment : Fragment() {
                     binding.etFuelPriceInput.visibility = View.GONE
                 }
 
-                "Change Tire" -> {
+                EventType.Tire.value -> {
                     // hidden fuel amount & price input field
                     binding.textInputLayoutInputFuelAmount.visibility = View.GONE
                     binding.etFuelAmountInput.visibility = View.GONE
@@ -77,7 +78,7 @@ class InputFragment : Fragment() {
                     binding.etFuelPriceInput.visibility = View.GONE
                 }
 
-                "Regular Service" -> {
+                EventType.RegularService.value -> {
                     // hidden fuel amount & price input field
                     binding.textInputLayoutInputFuelAmount.visibility = View.GONE
                     binding.etFuelAmountInput.visibility = View.GONE
@@ -132,24 +133,23 @@ class InputFragment : Fragment() {
             // hide keyboard
             (activity as AppCompatActivity).hideKeyboard()
 
-            // empty input field check
-            if (binding.etFuelAmountInput.text?.isEmpty()!!) {
-                // Toast message
-                (activity as MainActivity).toastMessage("Please enter fuel amount")
-                return@setOnClickListener
-            }
-
-            if (binding.etFuelPriceInput.text?.isEmpty()!!) {
-                // Toast message
-                (activity as MainActivity).toastMessage("Please enter fuel price")
-                return@setOnClickListener
-            }
-
+            // get input data
             val eventType = binding.autoTvDropdownEventType.text.toString()
             val date = binding.etDateInput.text.toString()
             val description = binding.etNoteInput.text.toString()
-            val fuelAmount = binding.etFuelAmountInput.text.toString().toInt()
-            val fuelPrice = binding.etFuelPriceInput.text.toString().toInt()
+            var fuelAmount = 0
+            var fuelPrice = 0
+
+            // empty input field check when event type is refuel
+            if (binding.autoTvDropdownEventType.text.toString() == EventType.Refuel.value) {
+                if(binding.etFuelAmountInput.text.toString().isEmpty() || binding.etFuelPriceInput.text.toString().isEmpty()) {
+                    (activity as AppCompatActivity).toastMessage("Please fill in all the fields")
+                    return@setOnClickListener
+                }
+
+                fuelAmount = binding.etFuelAmountInput.text.toString().toInt()
+                fuelPrice = binding.etFuelPriceInput.text.toString().toInt()
+            }
 
             // store to history table of Room database
             val history = History(eventType, date, description, fuelAmount, fuelPrice)
