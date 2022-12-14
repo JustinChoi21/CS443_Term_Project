@@ -7,7 +7,10 @@ import edu.umb.cs443termproject.MainActivity
 
 class AlarmReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        val intent = Intent(context, MainActivity::class.java)
-        intent!!.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+        val notificationHelper = NotificationHelper(context!!)
+        notificationHelper.createChannels("edu.umb.cs443termproject", "edu.umb.cs443termproject")
+        notificationHelper.showNotification("edu.umb.cs443termproject", 1, "Alarm", "Alarm is ringing")
+
     }
 }

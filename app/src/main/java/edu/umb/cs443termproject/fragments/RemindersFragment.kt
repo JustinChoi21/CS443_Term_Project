@@ -152,11 +152,13 @@ class RemindersFragment : Fragment() {
 //                alarmManager.cancel(pendingIntent)
 
                 // set the new alarm
+                val year = Calendar.getInstance().get(Calendar.YEAR)
+                val month = Calendar.getInstance().get(Calendar.MONTH)
+                val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+
                 val calendar = Calendar.getInstance()
-                calendar.set(Calendar.HOUR_OF_DAY, picker.hour)
-                calendar.set(Calendar.MINUTE, picker.minute)
-                calendar.set(Calendar.SECOND, 0)
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+                calendar.set(year, month, day, hour, minute, 0)
+                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
 
                 // show message
                 Toast.makeText(context, "Alarm time is set", Toast.LENGTH_SHORT).show()
