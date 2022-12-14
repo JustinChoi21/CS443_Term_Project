@@ -14,34 +14,24 @@ import edu.umb.cs443termproject.R
 
 class NotificationHelper(base: Context?) : ContextWrapper(base) {
 
-    // channel id and name
-    private val channelID = "CS443ChannelId"
-    private val channelName = "CS443ChannelName"
+    fun createChannels(channelID: String, channelName: String) {
 
-    init {
         // Notification Channel is only exist in API 26+ (Android Oreo or higher version)))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannels()
+
+            // create notification channel
+            val channel =
+                NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH)
+            channel.enableLights(true)
+            channel.enableVibration(true)
+            channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
-
     }
 
-    private fun createChannels() {
-        val channel = NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH)
-        channel.enableLights(true)
-        channel.enableVibration(true)
-        channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-
-        getManager().createNotificationChannel(channel)
-    }
-
-    // Create NotificationManager
-    fun getManager(): NotificationManager {
-        return getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    }
-
-    // setting Notification
-    fun getChannelNotification(title: String, body: String): NotificationCompat.Builder {
+    fun showNotification(channelID:String, notificationID:Int, title: String, message: String) {
 
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -56,19 +46,15 @@ class NotificationHelper(base: Context?) : ContextWrapper(base) {
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
-        return NotificationCompat.Builder(applicationContext, channelID)
+        val notificationBuilder = NotificationCompat.Builder(applicationContext, channelID)
             .setContentTitle(title)
-            .setContentText(body)
+            .setContentText(message)
             .setSmallIcon(R.drawable.ic_baseline_directions_car_24)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
-    }
 
-    fun showNotification(title: String, message: String) {
-        val nb: NotificationCompat.Builder =
-            this.getChannelNotification(title, message)
-
-            this.getManager().notify(1004, nb.build())
+        val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(notificationID, notificationBuilder.build())
     }
 
 }

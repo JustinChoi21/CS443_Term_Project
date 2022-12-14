@@ -63,6 +63,7 @@ class RemindersFragment : Fragment() {
 
         // initialize notificationHelper
         notificationHelper = NotificationHelper(context)
+        notificationHelper.createChannels("CS443ReminderSettings", "CS443ReminderSettings")
 
 
         // retrieve the switch conditions from the database & set the switch status
@@ -90,14 +91,13 @@ class RemindersFragment : Fragment() {
 
 
         // set switch event listener
-        val title = "CS443 Reminder"
-
         switchRefuelReminder.setOnClickListener() {
             val isChecked = switchRefuelReminder.isChecked
             if (isChecked) {
                 Log.d(TAG, "Refuel reminder is on")
-                val message = "Your refuel reminder is on. This reminder will notify you to refuel on the target date."
-                notificationHelper.showNotification(title, message)
+                val title = "Refuel Reminder is On"
+                val message = "This reminder will notify you to refuel on the target date."
+                notificationHelper.showNotification("CS443ReminderSettings", 1001, title, message)
                 switchRefuelReminder.isChecked = true
             } else {
                 Log.d(TAG, "Refuel reminder is off")
@@ -109,8 +109,9 @@ class RemindersFragment : Fragment() {
             val isChecked = switchEngineOilReminder.isChecked
             if (isChecked) {
                 Log.d(TAG, "Engine oil reminder is on")
-                val message = "Your engine oil reminder is on. This reminder will notify you to change engine oil on the target date."
-                notificationHelper.showNotification(title, message)
+                val title = "Engine Oil Change Reminder is On"
+                val message = "This reminder will notify you to change engine oil on the target date."
+                notificationHelper.showNotification("CS443ReminderSettings", 1002, title, message)
                 switchEngineOilReminder.isChecked = true
             } else {
                 Log.d(TAG, "Engine oil reminder is off")
@@ -122,8 +123,9 @@ class RemindersFragment : Fragment() {
             val isChecked = switchTireReminder.isChecked
             if (isChecked) {
                 Log.d(TAG, "Tire reminder is on")
-                val message = "Your tire reminder is on. This reminder will notify you to change tire on the target date."
-                notificationHelper.showNotification(title, message)
+                val title = "Tire Change Reminder is On"
+                val message = "This reminder will notify you to change tire on the target date."
+                notificationHelper.showNotification("CS443ReminderSettings", 1003 ,title, message)
                 switchTireReminder.isChecked = true
             } else {
                 Log.d(TAG, "Tire reminder is off")
@@ -135,8 +137,9 @@ class RemindersFragment : Fragment() {
             val isChecked = switchRegularServiceReminder.isChecked
             if (isChecked) {
                 Log.d(TAG, "Regular service reminder is on")
-                val message = "Your regular service reminder is on. This reminder will notify you to do regular service on the target date."
-                notificationHelper.showNotification(title, message)
+                val title = "Regular Service Reminder is On"
+                val message = "This reminder will notify you to do regular service on the target date."
+                notificationHelper.showNotification("CS443ReminderSettings", 1004, title, message)
                 switchRegularServiceReminder.isChecked = true
             } else {
                 Log.d(TAG, "Regular service reminder is off")
