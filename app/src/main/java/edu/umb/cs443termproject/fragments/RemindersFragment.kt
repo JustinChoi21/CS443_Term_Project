@@ -7,20 +7,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.data.EventType
-import edu.umb.cs443termproject.data.HistoryItems
 import edu.umb.cs443termproject.notifications.NotificationHelper
+import edu.umb.cs443termproject.room.Car
 import edu.umb.cs443termproject.room.History
 import edu.umb.cs443termproject.room.Reminder
 import edu.umb.cs443termproject.room.RoomHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class RemindersFragment : Fragment() {
@@ -57,8 +60,6 @@ class RemindersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         // initialize notificationHelper
         notificationHelper = NotificationHelper(context)
@@ -148,52 +149,80 @@ class RemindersFragment : Fragment() {
         val fab = (activity as MainActivity).findViewById<View>(R.id.floatingActionButton)
         fab.visibility = View.GONE
 
-        // retrieve data from database
+
+        // retrieve history & car data from database and set reminder date
         lifecycleScope.launch {
             val activity = view.context as AppCompatActivity
             val historyList: List<History> =
                 RoomHelper.getDatabase(activity).getHistoryDao().getAllHistory()
 
-            if (historyList.isNotEmpty()) {
+            val refuelList = historyList.filter { it.eventType == EventType.Refuel.value }
+            val engineOilList = historyList.filter { it.eventType == EventType.EngineOil.value }
+            val tireList = historyList.filter { it.eventType == EventType.Tire.value }
+            val regularServiceList = historyList.filter { it.eventType == EventType.RegularService.value }
 
-                // retrieve history & set historyArrayList
-                val historyArrayList: ArrayList<HistoryItems> = arrayListOf()
-                for (history in historyList) {
+            refuelList.sortedByDescending { it.eventDate }
+            engineOilList.sortedByDescending { it.eventDate }
+            tireList.sortedByDescending { it.eventDate }
+            regularServiceList.sortedByDescending { it.eventDate }
 
-                    // eventType icon
-                    var icon: Int = when (history.eventType) {
-                        EventType.Refuel.value -> R.drawable.list_icon_fuel
-                        EventType.EngineOil.value -> R.drawable.list_icon_oil
-                        EventType.Tire.value -> R.drawable.list_icon_tire
-                        EventType.RegularService.value -> R.drawable.list_icon_service
-                        else -> R.drawable.list_icon_fuel
-                    }
+            // last date of each event type
+            val datePattern = "MM/dd/yyyy"
+            val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern(datePattern)
 
-                    historyArrayList.add(
-                        HistoryItems(
-                            history.id,
-                            icon,
-                            history.eventType,
-                            history.eventDate,
-                            history.eventDescription,
-                            history.fuelAmount,
-                            history.fuelPrice
-                        )
-                    )
-                }
-
-                withContext(Dispatchers.Main) {
-                    // todo: set reminder date & alarm
-
-                }
-
+            val lastRefuelDate = if (refuelList.isNotEmpty()) {
+                LocalDate.parse(refuelList[0].eventDate, dateFormat)
             } else {
-
-                // todo: no reminder data
-                Log.d(HomeFragment.TAG, "onViewCreated: no reminder data")
-
+                LocalDate.now()
             }
-        }
+
+            val lastEngineOilDate = if (engineOilList.isNotEmpty()) {
+                LocalDate.parse(engineOilList[0].eventDate, dateFormat)
+            } else {
+                LocalDate.now()
+            }
+
+            val lastTireDate = if (tireList.isNotEmpty()) {
+                LocalDate.parse(tireList[0].eventDate, dateFormat)
+            } else {
+                LocalDate.now()
+            }
+
+            val lastRegularServiceDate = if (regularServiceList.isNotEmpty()) {
+                LocalDate.parse(regularServiceList[0].eventDate, dateFormat)
+            } else {
+                LocalDate.now()
+            }
+
+            // retrieve car data from database
+            val carList: List<Car> =
+                RoomHelper.getDatabase(activity).getCarDao().getAllCar()
+
+            val refuelFuelTankCapacity = carList[0].fuelTank
+            val engineOilInterval = carList[0].engineOil
+            val tireInterval = carList[0].tire
+            val regularServiceInterval = carList[0].regularService
+
+            // calculate the reminder date of each event type
+            val refuelReminderDate = lastRefuelDate.plusMonths(1L).format(dateFormat)
+            val engineOilReminderDate = lastEngineOilDate.plusMonths(engineOilInterval.toLong()).format(dateFormat)
+            val tireReminderDate = lastTireDate.plusMonths(tireInterval.toLong()).format(dateFormat)
+            val regularServiceReminderDate = lastRegularServiceDate.plusMonths(regularServiceInterval.toLong()).format(dateFormat)
+
+            // set the last event date to the reminder date
+            withContext(Dispatchers.Main) {
+                activity.findViewById<TextView>(R.id.tv_refuel_reminder_description)
+                    .text = "Refuel your car on $refuelReminderDate"
+                activity.findViewById<TextView>(R.id.tv_engine_oil_reminder_description)
+                    .text = "Change engine oil on $engineOilReminderDate"
+                activity.findViewById<TextView>(R.id.tv_tire_reminder_description)
+                    .text = "Change tire on $tireReminderDate"
+                activity.findViewById<TextView>(R.id.tv_regular_service_reminder_description)
+                    .text = "Do regular service on $regularServiceReminderDate"
+            }
+
+        } // end of lifecycleScope.launch
+
     } // onViewCreated() End
 
 
