@@ -16,9 +16,6 @@
         android:theme="@style/Theme.CS443TermProject"
         tools:targetApi="32">
 
-        <receiver android:name=".notifications.AlarmReceiver"
-            android:enabled="true"/>
-
         <receiver android:name=".notifications.RefuelAlarmReceiver"
             android:enabled="true"/>
 

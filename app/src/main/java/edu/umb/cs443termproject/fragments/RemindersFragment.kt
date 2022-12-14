@@ -215,10 +215,11 @@ class RemindersFragment : Fragment() {
         val intentTire = Intent(context, TireAlarmReceiver::class.java)
         val intentRegularService = Intent(context, RegularServiceAlarmReceiver::class.java)
 
-        pendingIntentRefuel = PendingIntent.getBroadcast(context, 0, intentRefuel, 0)
-        pendingIntentEngineOil = PendingIntent.getBroadcast(context, 0, intentEngineOil, 0)
-        pendingIntentTire = PendingIntent.getBroadcast(context, 0, intentTire, 0)
-        pendingIntentRegularService = PendingIntent.getBroadcast(context, 0, intentRegularService, 0)
+        val flag = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_ONE_SHOT
+        pendingIntentRefuel = PendingIntent.getBroadcast(context, 1001, intentRefuel, flag)
+        pendingIntentEngineOil = PendingIntent.getBroadcast(context, 1002, intentEngineOil, flag)
+        pendingIntentTire = PendingIntent.getBroadcast(context, 1003, intentTire, flag)
+        pendingIntentRegularService = PendingIntent.getBroadcast(context, 1004, intentRegularService, flag)
 
         // click the set alarm time button
         val setAlarmTimeButton = (activity as MainActivity).findViewById<TextView>(R.id.btn_set_alarm_time)
@@ -368,7 +369,8 @@ class RemindersFragment : Fragment() {
 
     private fun initNotificationHelper() {
         notificationHelper = NotificationHelper(context)
-        notificationHelper.createChannels("CS443ReminderSettings", "CS443ReminderSettings") // this channel is for the notification of each reminders (refuel, engine oil, tire, regular service) is on
+        // this channels are for the notification of each reminders (refuel, engine oil, tire, regular service) is on
+        notificationHelper.createChannels("CS443ReminderSettings", "CS443ReminderSettings")
         notificationHelper.createChannels("CS443RefuelAlarm", "CS443RefuelAlarm")
         notificationHelper.createChannels("CS443EngineOilAlarm", "CS443EngineOilAlarm")
         notificationHelper.createChannels("CS443TireAlarm", "CS443TireAlarm")
@@ -407,14 +409,14 @@ class RemindersFragment : Fragment() {
         val calendar = Calendar.getInstance()
 
         // real date
-//        val year = remdinerDate.year
-//        val month = remdinerDate.monthValue - 1
-//        val day = remdinerDate.dayOfMonth
+        val year = remdinerDate.year
+        val month = remdinerDate.monthValue - 1
+        val day = remdinerDate.dayOfMonth
 
         // test date
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+//        val year = calendar.get(Calendar.YEAR)
+//        val month = calendar.get(Calendar.MONTH)
+//        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         Log.d(TAG, "setAlarm: year: $year, month: $month, day: $day, hour: $hour, minute: $minute")
 
@@ -422,9 +424,5 @@ class RemindersFragment : Fragment() {
         alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
 
     } // setAlarm() End
-
-    private fun cancelAlarm(pendingIntent: PendingIntent) {
-        alarmManager.cancel(pendingIntent)
-    }
 
 } // end of class
