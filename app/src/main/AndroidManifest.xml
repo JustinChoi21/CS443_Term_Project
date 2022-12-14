@@ -19,6 +19,18 @@
         <receiver android:name=".notifications.AlarmReceiver"
             android:enabled="true"/>
 
+        <receiver android:name=".notifications.RefuelAlarmReceiver"
+            android:enabled="true"/>
+
+        <receiver android:name=".notifications.EngineOilAlarmReceiver"
+            android:enabled="true"/>
+
+        <receiver android:name=".notifications.TireAlarmReceiver"
+            android:enabled="true"/>
+
+        <receiver android:name=".notifications.RegularServiceAlarmReceiver"
+            android:enabled="true"/>
+
         <activity
             android:name=".RegisterActivity"
             android:exported="false">

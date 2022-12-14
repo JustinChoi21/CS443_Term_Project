@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context.ALARM_SERVICE
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,12 +20,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.google.android.material.timepicker.TimeFormat.CLOCK_12H
 import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.data.EventType
-import edu.umb.cs443termproject.notifications.AlarmReceiver
-import edu.umb.cs443termproject.notifications.NotificationHelper
+import edu.umb.cs443termproject.notifications.*
 import edu.umb.cs443termproject.room.Car
 import edu.umb.cs443termproject.room.History
 import edu.umb.cs443termproject.room.Reminder
@@ -31,6 +31,7 @@ import edu.umb.cs443termproject.room.RoomHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -40,7 +41,22 @@ class RemindersFragment : Fragment() {
 
     private lateinit var picker: MaterialTimePicker
     private lateinit var alarmManager: AlarmManager
-    private lateinit var pendingIntent: PendingIntent
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferencesEditor: SharedPreferences.Editor
+    private val SHARED_PREFS = "sharedPrefs"
+
+    private lateinit var refuelReminderDate: LocalDate
+    private lateinit var engineOilReminderDate: LocalDate
+    private lateinit var tireReminderDate: LocalDate
+    private lateinit var regularServiceReminderDate: LocalDate
+
+    private lateinit var pendingIntentRefuel: PendingIntent
+    private lateinit var pendingIntentEngineOil: PendingIntent
+    private lateinit var pendingIntentTire: PendingIntent
+    private lateinit var pendingIntentRegularService: PendingIntent
+
+    private var alarmHour: Int = 10
+    private var alarmMinute: Int = 0
 
     companion object {
         const val TAG : String = "CS443"
@@ -66,7 +82,6 @@ class RemindersFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.d(HomeFragment.TAG, "RemindersFragment - onCreateView() called")
-
         return inflater.inflate(R.layout.fragment_reminders, container, false)
     }
 
@@ -75,167 +90,9 @@ class RemindersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // initialize notificationHelper
-        notificationHelper = NotificationHelper(context)
-        notificationHelper.createChannels("CS443ReminderSettings", "CS443ReminderSettings") // this channel is for the notification of each reminders (refuel, engine oil, tire, regular service) is on
-        notificationHelper.createChannels("CS443RefuelAlarm", "CS443RefuelAlarm")
-        notificationHelper.createChannels("CS443EngineOilAlarm", "CS443EngineOilAlarm")
-        notificationHelper.createChannels("CS443TireAlarm", "CS443TireAlarm")
-        notificationHelper.createChannels("CS443RegularServiceAlarm", "CS443RegularServiceAlarm")
-
-
-        // retrieve the switch conditions from the database & set the switch status
-        switchRefuelReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_refuel_reminder)
-        switchEngineOilReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_engine_oil_reminder)
-        switchTireReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_tire_reminder)
-        switchRegularServiceReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_regular_service_reminder)
-
-        val activity = view.context as AppCompatActivity
-        lifecycleScope.launch {
-            val reminderList : List<Reminder> = RoomHelper.getDatabase(activity).getReminderDao().getAllReminders()
-            if(reminderList.isNotEmpty()) {
-                withContext(Dispatchers.Main) {
-                    switchRefuelReminder.isChecked = reminderList[0].refuel == 1
-                    switchEngineOilReminder.isChecked = reminderList[0].engineOil == 1
-                    switchTireReminder.isChecked = reminderList[0].tire == 1
-                    switchRegularServiceReminder.isChecked = reminderList[0].regularService == 1
-                }
-            } else {
-                // add reminder data to the database
-                val reminder = Reminder(0, 0, 0, 0)
-                RoomHelper.getDatabase(activity).getReminderDao().addReminder(reminder)
-            }
-        }
-
-        // todo: retrieve the alarm time from the database
-        lifecycleScope.launch {
-
-        }
-
-        // when select set alarm time button
-        val setAlarmTimeButton = (activity as MainActivity).findViewById<TextView>(R.id.btn_set_alarm_time)
-        val alarmTimeTextView = (activity as MainActivity).findViewById<TextView>(R.id.tv_set_alarm_time)
-        setAlarmTimeButton.setOnClickListener {
-            // show time picker dialog
-            picker = MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_12H)
-                .setHour(12)
-                .setMinute(0)
-                .setTitleText("Select Alarm Time")
-                .build()
-
-            picker.show(activity.supportFragmentManager, "CS443")
-
-            // when the time is selected
-            picker.addOnPositiveButtonClickListener {
-                val hour = picker.hour
-                val minute = picker.minute
-                val time = "$hour:$minute"
-
-                var minuteString = minute.toString()
-                if(minute < 10) {
-                    minuteString = "0$minute"
-                }
-
-                if(hour > 12) {
-                    alarmTimeTextView.text = "${hour - 12}:$minuteString PM"
-                } else {
-                    alarmTimeTextView.text = "$hour:$minuteString AM"
-                }
-
-                // update the alarm time in the database
-
-                // update the time of the previous alarm
-                alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
-                val intent = Intent(context, AlarmReceiver::class.java)
-                pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
-//                alarmManager.cancel(pendingIntent)
-
-                // set the new alarm
-                val year = Calendar.getInstance().get(Calendar.YEAR)
-                val month = Calendar.getInstance().get(Calendar.MONTH)
-                val day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-
-                val calendar = Calendar.getInstance()
-                calendar.set(year, month, day, hour, minute, 0)
-                alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
-
-                // show message
-                Toast.makeText(context, "Alarm time is set", Toast.LENGTH_SHORT).show()
-
-                Log.d(TAG, "onViewCreated: alarm time is set")
-
-            } // end of addOnPositiveButtonClickListener
-
-        } // end of setAlarmTimeButton.setOnClickListener
-
-
-
-        // set switch event listener
-        switchRefuelReminder.setOnClickListener() {
-            val isChecked = switchRefuelReminder.isChecked
-            if (isChecked) {
-                // show notification of refuel reminder is on
-                val title = "Refuel Reminder is On"
-                val message = "This reminder will notify you to refuel on the target date."
-                notificationHelper.showNotification("CS443ReminderSettings", 1001, title, message)
-                switchRefuelReminder.isChecked = true
-
-                // set alarm for refuel reminder
-
-            } else {
-                Log.d(TAG, "Refuel reminder is off")
-                switchRefuelReminder.isChecked = false
-            }
-            updateReminderStatus()
-        }
-        switchEngineOilReminder.setOnClickListener() {
-            val isChecked = switchEngineOilReminder.isChecked
-            if (isChecked) {
-                Log.d(TAG, "Engine oil reminder is on")
-                val title = "Engine Oil Change Reminder is On"
-                val message = "This reminder will notify you to change engine oil on the target date."
-                notificationHelper.showNotification("CS443ReminderSettings", 1002, title, message)
-                switchEngineOilReminder.isChecked = true
-            } else {
-                Log.d(TAG, "Engine oil reminder is off")
-                switchEngineOilReminder.isChecked = false
-            }
-            updateReminderStatus()
-        }
-        switchTireReminder.setOnClickListener() {
-            val isChecked = switchTireReminder.isChecked
-            if (isChecked) {
-                Log.d(TAG, "Tire reminder is on")
-                val title = "Tire Change Reminder is On"
-                val message = "This reminder will notify you to change tire on the target date."
-                notificationHelper.showNotification("CS443ReminderSettings", 1003 ,title, message)
-                switchTireReminder.isChecked = true
-            } else {
-                Log.d(TAG, "Tire reminder is off")
-                switchTireReminder.isChecked = false
-            }
-            updateReminderStatus()
-        }
-        switchRegularServiceReminder.setOnClickListener() {
-            val isChecked = switchRegularServiceReminder.isChecked
-            if (isChecked) {
-                Log.d(TAG, "Regular service reminder is on")
-                val title = "Regular Service Reminder is On"
-                val message = "This reminder will notify you to do regular service on the target date."
-                notificationHelper.showNotification("CS443ReminderSettings", 1004, title, message)
-                switchRegularServiceReminder.isChecked = true
-            } else {
-                Log.d(TAG, "Regular service reminder is off")
-                switchRegularServiceReminder.isChecked = false
-            }
-            updateReminderStatus()
-        }
-
-        // hide floating action button
-        val fab = (activity as MainActivity).findViewById<View>(R.id.floatingActionButton)
-        fab.visibility = View.GONE
-
+        // shared preferences
+        sharedPreferences = (activity as MainActivity).getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+        sharedPreferencesEditor = sharedPreferences.edit()
 
         // retrieve history & car data from database and set reminder date
         lifecycleScope.launch {
@@ -291,29 +148,234 @@ class RemindersFragment : Fragment() {
             val regularServiceInterval = carList[0].regularService
 
             // calculate the reminder date of each event type
-            val refuelReminderDate = lastRefuelDate.plusMonths(1L).format(dateFormat)
-            val engineOilReminderDate = lastEngineOilDate.plusMonths(engineOilInterval.toLong()).format(dateFormat)
-            val tireReminderDate = lastTireDate.plusMonths(tireInterval.toLong()).format(dateFormat)
-            val regularServiceReminderDate = lastRegularServiceDate.plusMonths(regularServiceInterval.toLong()).format(dateFormat)
+            refuelReminderDate = lastRefuelDate.plusMonths(1L)
+            val refuelReminderDateString = refuelReminderDate.format(dateFormat)
+
+            engineOilReminderDate = lastEngineOilDate.plusMonths(engineOilInterval.toLong())
+            val engineOilReminderDateString = engineOilReminderDate.format(dateFormat)
+
+            tireReminderDate = lastTireDate.plusMonths(tireInterval.toLong())
+            val tireReminderDateString = tireReminderDate.format(dateFormat)
+
+            regularServiceReminderDate = lastRegularServiceDate.plusMonths(regularServiceInterval.toLong())
+            val regularServiceReminderDateString = regularServiceReminderDate.format(dateFormat)
+
 
             // set the last event date to the reminder date
             withContext(Dispatchers.Main) {
                 activity.findViewById<TextView>(R.id.tv_refuel_reminder_description)
-                    .text = "Refuel your car on $refuelReminderDate"
+                    .text = "Refuel your car on $refuelReminderDateString"
                 activity.findViewById<TextView>(R.id.tv_engine_oil_reminder_description)
-                    .text = "Change engine oil on $engineOilReminderDate"
+                    .text = "Change engine oil on $engineOilReminderDateString"
                 activity.findViewById<TextView>(R.id.tv_tire_reminder_description)
-                    .text = "Change tire on $tireReminderDate"
+                    .text = "Change tire on $tireReminderDateString"
                 activity.findViewById<TextView>(R.id.tv_regular_service_reminder_description)
-                    .text = "Do regular service on $regularServiceReminderDate"
+                    .text = "Do regular service on $regularServiceReminderDateString"
             }
-
         } // end of lifecycleScope.launch
+
+
+        // retrieve the switch conditions from the database & set the switch status
+        switchRefuelReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_refuel_reminder)
+        switchEngineOilReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_engine_oil_reminder)
+        switchTireReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_tire_reminder)
+        switchRegularServiceReminder = (activity as MainActivity).findViewById<Switch>(R.id.switch_regular_service_reminder)
+
+        val activity = view.context as AppCompatActivity
+        lifecycleScope.launch {
+            val reminderList : List<Reminder> = RoomHelper.getDatabase(activity).getReminderDao().getAllReminders()
+            if(reminderList.isNotEmpty()) {
+                withContext(Dispatchers.Main) {
+                    switchRefuelReminder.isChecked = reminderList[0].refuel == 1
+                    switchEngineOilReminder.isChecked = reminderList[0].engineOil == 1
+                    switchTireReminder.isChecked = reminderList[0].tire == 1
+                    switchRegularServiceReminder.isChecked = reminderList[0].regularService == 1
+                }
+            } else {
+                // add reminder data to the database
+                val reminder = Reminder(0, 0, 0, 0)
+                RoomHelper.getDatabase(activity).getReminderDao().addReminder(reminder)
+            }
+        }
+
+        // retrieve the alarm time from shared preferences & set the text view
+        val alarmTime = sharedPreferences.getString("alarmTime", "10:00")
+        setAlarmTimeText(
+            alarmTime?.split(":")?.get(0)?.toInt()!!,
+            alarmTime?.split(":")?.get(1)?.toInt()!!
+        )
+
+
+        // initialize for the alarm
+        initNotificationHelper()
+
+        alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
+        val intentRefuel = Intent(context, RefuelAlarmReceiver::class.java)
+        val intentEngineOil = Intent(context, EngineOilAlarmReceiver::class.java)
+        val intentTire = Intent(context, TireAlarmReceiver::class.java)
+        val intentRegularService = Intent(context, RegularServiceAlarmReceiver::class.java)
+
+        pendingIntentRefuel = PendingIntent.getBroadcast(context, 0, intentRefuel, 0)
+        pendingIntentEngineOil = PendingIntent.getBroadcast(context, 0, intentEngineOil, 0)
+        pendingIntentTire = PendingIntent.getBroadcast(context, 0, intentTire, 0)
+        pendingIntentRegularService = PendingIntent.getBroadcast(context, 0, intentRegularService, 0)
+
+        // click the set alarm time button
+        val setAlarmTimeButton = (activity as MainActivity).findViewById<TextView>(R.id.btn_set_alarm_time)
+        setAlarmTimeButton.setOnClickListener {
+            // show time picker dialog
+            picker = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(12)
+                .setMinute(0)
+                .setTitleText("Select Alarm Time")
+                .build()
+
+            picker.show(activity.supportFragmentManager, "CS443")
+
+            // when the time is selected
+            picker.addOnPositiveButtonClickListener {
+
+                alarmHour = picker.hour
+                alarmMinute = picker.minute
+
+                // edit the alarm time in shared preferences
+                sharedPreferencesEditor.putString("alarmTime", "${alarmHour}:${alarmMinute}")
+                sharedPreferencesEditor.apply()
+
+                // cancel all previous alarms
+                alarmManager.cancel(pendingIntentRefuel)
+                alarmManager.cancel(pendingIntentEngineOil)
+                alarmManager.cancel(pendingIntentTire)
+                alarmManager.cancel(pendingIntentRegularService)
+
+                // set the new alarm if the switch is on
+                if(switchRefuelReminder.isChecked) { setAlarm(refuelReminderDate, alarmHour, alarmMinute, pendingIntentRefuel) }
+                if(switchEngineOilReminder.isChecked) { setAlarm(engineOilReminderDate, alarmHour, alarmMinute, pendingIntentEngineOil) }
+                if(switchTireReminder.isChecked) { setAlarm(tireReminderDate, alarmHour, alarmMinute, pendingIntentTire) }
+                if(switchRegularServiceReminder.isChecked) { setAlarm(regularServiceReminderDate, alarmHour, alarmMinute, pendingIntentRegularService) }
+
+                // set the selected time to the text view
+                setAlarmTimeText(alarmHour, alarmMinute)
+
+                // show message
+                Toast.makeText(context, "Alarm time is set", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "onViewCreated: alarm time is set")
+
+            } // end of addOnPositiveButtonClickListener
+
+        } // end of setAlarmTimeButton.setOnClickListener
+
+
+
+        // set switch event listener
+        switchRefuelReminder.setOnClickListener() {
+            val isChecked = switchRefuelReminder.isChecked
+            if (isChecked) {
+                // show notification of refuel reminder is on
+                val title = "Refuel Reminder is On"
+                val message = "This reminder will notify you to refuel on the target date."
+                notificationHelper.showNotification("CS443ReminderSettings", 1001, title, message)
+                switchRefuelReminder.isChecked = true
+
+                // set alarm for refuel reminder
+                setAlarm(refuelReminderDate, alarmHour, alarmMinute, pendingIntentRefuel)
+
+            } else {
+                Log.d(TAG, "Refuel reminder is off")
+                switchRefuelReminder.isChecked = false
+
+                // cancel alarm for refuel reminder
+                alarmManager.cancel(pendingIntentRefuel)
+            }
+            updateReminderStatusInRoomDB()
+        }
+
+        switchEngineOilReminder.setOnClickListener() {
+            val isChecked = switchEngineOilReminder.isChecked
+            if (isChecked) {
+                Log.d(TAG, "Engine oil reminder is on")
+                val title = "Engine Oil Change Reminder is On"
+                val message = "This reminder will notify you to change engine oil on the target date."
+                notificationHelper.showNotification("CS443ReminderSettings", 1002, title, message)
+                switchEngineOilReminder.isChecked = true
+
+                // set alarm for engine oil reminder
+                setAlarm(engineOilReminderDate, alarmHour, alarmMinute, pendingIntentEngineOil)
+
+            } else {
+                Log.d(TAG, "Engine oil reminder is off")
+                switchEngineOilReminder.isChecked = false
+
+                // cancel alarm for engine oil reminder
+                alarmManager.cancel(pendingIntentEngineOil)
+            }
+            updateReminderStatusInRoomDB()
+        }
+
+        switchTireReminder.setOnClickListener() {
+            val isChecked = switchTireReminder.isChecked
+            if (isChecked) {
+                Log.d(TAG, "Tire reminder is on")
+                val title = "Tire Change Reminder is On"
+                val message = "This reminder will notify you to change tire on the target date."
+                notificationHelper.showNotification("CS443ReminderSettings", 1003 ,title, message)
+                switchTireReminder.isChecked = true
+
+                // set alarm for tire reminder
+                setAlarm(tireReminderDate, alarmHour, alarmMinute, pendingIntentTire)
+
+            } else {
+                Log.d(TAG, "Tire reminder is off")
+                switchTireReminder.isChecked = false
+
+                // cancel alarm for tire reminder
+                alarmManager.cancel(pendingIntentTire)
+
+            }
+            updateReminderStatusInRoomDB()
+        }
+
+        switchRegularServiceReminder.setOnClickListener() {
+            val isChecked = switchRegularServiceReminder.isChecked
+            if (isChecked) {
+                Log.d(TAG, "Regular service reminder is on")
+                val title = "Regular Service Reminder is On"
+                val message = "This reminder will notify you to do regular service on the target date."
+                notificationHelper.showNotification("CS443ReminderSettings", 1004, title, message)
+                switchRegularServiceReminder.isChecked = true
+
+                // set alarm for regular service reminder
+                setAlarm(regularServiceReminderDate, alarmHour, alarmMinute, pendingIntentRegularService)
+
+            } else {
+                Log.d(TAG, "Regular service reminder is off")
+                switchRegularServiceReminder.isChecked = false
+
+                // cancel alarm for regular service reminder
+                alarmManager.cancel(pendingIntentRegularService)
+            }
+            updateReminderStatusInRoomDB()
+        }
+
+        // hide floating action button
+        val fab = (activity as MainActivity).findViewById<View>(R.id.floatingActionButton)
+        fab.visibility = View.GONE
+
 
     } // onViewCreated() End
 
 
-    private fun updateReminderStatus() {
+    private fun initNotificationHelper() {
+        notificationHelper = NotificationHelper(context)
+        notificationHelper.createChannels("CS443ReminderSettings", "CS443ReminderSettings") // this channel is for the notification of each reminders (refuel, engine oil, tire, regular service) is on
+        notificationHelper.createChannels("CS443RefuelAlarm", "CS443RefuelAlarm")
+        notificationHelper.createChannels("CS443EngineOilAlarm", "CS443EngineOilAlarm")
+        notificationHelper.createChannels("CS443TireAlarm", "CS443TireAlarm")
+        notificationHelper.createChannels("CS443RegularServiceAlarm", "CS443RegularServiceAlarm")
+    }
+
+    private fun updateReminderStatusInRoomDB() {
         val refuel = if(switchRefuelReminder.isChecked) 1 else 0
         val engineOil = if(switchEngineOilReminder.isChecked) 1 else 0
         val tire = if(switchTireReminder.isChecked) 1 else 0
@@ -324,4 +386,45 @@ class RemindersFragment : Fragment() {
             RoomHelper.getDatabase(context as AppCompatActivity).getReminderDao().updateReminder(reminder)
         }
     }
-}
+
+    private fun setAlarmTimeText(hour24: Int, minute60: Int) {
+        val alarmTimeTextView = (activity as MainActivity).findViewById<TextView>(R.id.tv_set_alarm_time)
+
+        var minuteString = minute60.toString()
+
+        if(minute60 < 10) {
+            minuteString = "0$minute60"
+        }
+
+        if(hour24 > 12) {
+            alarmTimeTextView.text = "${hour24 - 12}:$minuteString PM"
+        } else {
+            alarmTimeTextView.text = "$hour24:$minuteString AM"
+        }
+    }
+
+    private fun setAlarm(remdinerDate: LocalDate, hour: Int, minute: Int, pendingIntent: PendingIntent) {
+        val calendar = Calendar.getInstance()
+
+        // real date
+//        val year = remdinerDate.year
+//        val month = remdinerDate.monthValue - 1
+//        val day = remdinerDate.dayOfMonth
+
+        // test date
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        Log.d(TAG, "setAlarm: year: $year, month: $month, day: $day, hour: $hour, minute: $minute")
+
+        calendar.set(year, month, day, hour, minute, 0)
+        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+
+    } // setAlarm() End
+
+    private fun cancelAlarm(pendingIntent: PendingIntent) {
+        alarmManager.cancel(pendingIntent)
+    }
+
+} // end of class
