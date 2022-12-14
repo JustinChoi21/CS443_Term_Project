@@ -130,6 +130,7 @@ class LoginActivity : AppCompatActivity() {
                         hideKeyboard()
                         var intent: Intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
                         startActivity(intent)
+                        finish()
                     }
 
                 } // else

@@ -21,7 +21,7 @@ class ForgotPasswordActivity: AppCompatActivity() {
 
         // get the et_forgot_password
         val etForgotPassword: TextView = findViewById(R.id.et_forgot_password)
-        if(etForgotPassword.toString() == "CS443") {
+        if(etForgotPassword.toString() == "443") {
             val intent: Intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }

@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import edu.umb.cs443termproject.data.UserAccount
+import edu.umb.cs443termproject.extentions.hideKeyboard
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -78,6 +80,17 @@ class RegisterActivity : AppCompatActivity() {
                 Log.d(RegisterActivity.TAG, "onCreate: Register Failed!")
                 Toast.makeText(this, "Please Enter email & password.",Toast.LENGTH_LONG).show()
             }
+        } // mBtnRegister.setOnClickListener
+
+        // can't register click here link
+        val tvForgotPassword = findViewById<TextView>(R.id.tv_forgot_password_link_of_register)
+        tvForgotPassword.setOnClickListener() {
+            hideKeyboard()
+            var intent: Intent = Intent(this@RegisterActivity, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+            finish()
         }
-    }
-}
+
+    } // onCreate
+
+} // RegisterActivity
