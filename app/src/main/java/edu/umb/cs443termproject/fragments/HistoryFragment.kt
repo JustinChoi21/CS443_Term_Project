@@ -144,10 +144,10 @@ class HistoryFragment : Fragment() {
 
                 // create dummy data for testing
                 val historyList = arrayListOf(
-                    History(EventType.Refuel.value, "12/12/2022", "Fuel Amount: 10Gal & Price: $30", 10, 30),
-                    History(EventType.EngineOil.value, "12/12/2022", "At service center & price $50", 0, 0),
+                    History(EventType.Refuel.value, "12/14/2022", "Fuel Amount: 10Gal & Price: $30", 10, 30),
+                    History(EventType.EngineOil.value, "12/13/2022", "At service center & price $50", 0, 0),
                     History(EventType.Tire.value, "12/12/2022", "At Service center & price $100", 0, 0),
-                    History(EventType.RegularService.value, "12/12/2022", "At Service center & price $120", 0, 0),
+                    History(EventType.RegularService.value, "12/01/2022", "At Service center & price $120", 0, 0),
 
                     History(EventType.Refuel.value, "12/01/2022", "Fuel Amount: 5Gal & Price: $15", 5, 15),
                     History(EventType.EngineOil.value, "12/01/2022", "At service center & price $50", 0, 0),
