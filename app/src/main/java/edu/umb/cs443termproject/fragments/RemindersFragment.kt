@@ -7,6 +7,7 @@ import android.content.Context.ALARM_SERVICE
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -215,7 +216,12 @@ class RemindersFragment : Fragment() {
         val intentTire = Intent(context, TireAlarmReceiver::class.java)
         val intentRegularService = Intent(context, RegularServiceAlarmReceiver::class.java)
 
-        val flag = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_ONE_SHOT
+        val flag: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+
         pendingIntentRefuel = PendingIntent.getBroadcast(context, 1001, intentRefuel, flag)
         pendingIntentEngineOil = PendingIntent.getBroadcast(context, 1002, intentEngineOil, flag)
         pendingIntentTire = PendingIntent.getBroadcast(context, 1003, intentTire, flag)
