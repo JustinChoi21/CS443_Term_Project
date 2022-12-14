@@ -8,5 +8,5 @@
 6. Click "Run" to run the app on an emulator
 
 ### Test Emulator
-Pixel 5 API 26
-Pixel 5 API 32
+- Pixel 5 API 26
+- Pixel 5 API 32
