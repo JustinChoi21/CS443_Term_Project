@@ -35,7 +35,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
 
         // Check stay logged in
         var stayLoggedIn: Boolean = false
@@ -55,87 +54,89 @@ class LoginActivity : AppCompatActivity() {
                     finish() // delete current activity, because we don't need to back to login activity
 
                 } else {
+
                     // should login
-                }
-            }
-        }
+                    setContentView(R.layout.activity_login)
 
-        // register button click -> move to Register activity
-        val btnRegister: Button = findViewById(R.id.btn_move_to_register)
-        btnRegister.setOnClickListener {
-            hideKeyboard()
-            var intent: Intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
+                    // register button click -> move to Register activity
+                    val btnRegister: Button = findViewById(R.id.btn_move_to_register)
+                    btnRegister.setOnClickListener {
+                        hideKeyboard()
+                        var intent: Intent = Intent(this@LoginActivity, RegisterActivity::class.java)
+                        startActivity(intent)
+                    }
 
 
-        // login prepare
-        mFirebaseAuth = FirebaseAuth.getInstance()
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("CS443") // string to unify firebase ref
+                    // login prepare
+                    mFirebaseAuth = FirebaseAuth.getInstance()
+                    mDatabaseReference = FirebaseDatabase.getInstance().getReference("CS443") // string to unify firebase ref
 
-        mEtEmail = findViewById(R.id.et_login_email)
-        mEtPwd = findViewById(R.id.et_login_pwd)
-        mBtnLogin = findViewById(R.id.btn_login)
-        mSwitchStayLoggedIn = findViewById(R.id.switch_stay_logged_in)
-
-
-        // when switch is checked hide keyboard
-        mSwitchStayLoggedIn.setOnCheckedChangeListener { _, isChecked ->
-            hideKeyboard()
-        }
+                    mEtEmail = findViewById(R.id.et_login_email)
+                    mEtPwd = findViewById(R.id.et_login_pwd)
+                    mBtnLogin = findViewById(R.id.btn_login)
+                    mSwitchStayLoggedIn = findViewById(R.id.switch_stay_logged_in)
 
 
-        // login button click
-        mBtnLogin.setOnClickListener {
-            hideKeyboard()
+                    // when switch is checked hide keyboard
+                    mSwitchStayLoggedIn.setOnCheckedChangeListener { _, isChecked ->
+                        hideKeyboard()
+                    }
 
-            Log.d(RegisterActivity.TAG, "onCreate: mBtnLogin clicked!")
-            var strEmail: String = mEtEmail.text.toString()
-            val strPwd: String = mEtPwd.text.toString()
+                    // login button click
+                    mBtnLogin.setOnClickListener {
+                        hideKeyboard()
 
-            // email & password null & empty check
-            if (strEmail.isNotEmpty() && strPwd.isNotEmpty()) {
+                        Log.d(RegisterActivity.TAG, "onCreate: mBtnLogin clicked!")
+                        var strEmail: String = mEtEmail.text.toString()
+                        val strPwd: String = mEtPwd.text.toString()
 
-                mFirebaseAuth.signInWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(this) { task ->
-                    if(task.isSuccessful) {
-                        Log.d(RegisterActivity.TAG, "onCreate: Login Success")
+                        // email & password null & empty check
+                        if (strEmail.isNotEmpty() && strPwd.isNotEmpty()) {
 
-                        if(mSwitchStayLoggedIn.isChecked) {
-                            Log.d(TAG, "onCreate: Stay Logged In checked")
+                            mFirebaseAuth.signInWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(this@LoginActivity) { task ->
+                                if(task.isSuccessful) {
+                                    Log.d(RegisterActivity.TAG, "onCreate: Login Success")
 
-                            // store stay logged in to Room database
-                            lifecycleScope.launch {
-                                var login = Login(strEmail, true)
-                                RoomHelper.getDatabase(this@LoginActivity).getLoginDao().addLogin(login)
-                                finish()
+                                    if(mSwitchStayLoggedIn.isChecked) {
+                                        Log.d(TAG, "onCreate: Stay Logged In checked")
+
+                                        // store stay logged in to Room database
+                                        lifecycleScope.launch {
+                                            var login = Login(strEmail, true)
+                                            RoomHelper.getDatabase(this@LoginActivity).getLoginDao().addLogin(login)
+                                            finish()
+                                        }
+
+                                    }
+
+                                    var intent: Intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                    startActivity(intent)
+                                    finish() // delete current activity, because we don't need to back to login activity
+
+                                } else {
+                                    Log.d(RegisterActivity.TAG, "onCreate: Login Failed!")
+                                    Toast.makeText(this@LoginActivity, "Login Failed.", Toast.LENGTH_LONG).show()
+                                }
                             }
 
-                        } else {
-                            // todo: delete stay logged in on Room database
+                        } else { // email & password null & empty check
+                            Toast.makeText(this@LoginActivity, "Please Enter email & password.",Toast.LENGTH_LONG).show()
                         }
-
-                        var intent: Intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        finish() // delete current activity, because we don't need to back to login activity
-
-                    } else {
-                        Log.d(RegisterActivity.TAG, "onCreate: Login Failed!")
-                        Toast.makeText(this, "Login Failed.", Toast.LENGTH_LONG).show()
                     }
-                }
 
-            } else { // email & password null & empty check
-                Toast.makeText(this, "Please Enter email & password.",Toast.LENGTH_LONG).show()
-            }
-        }
+                    // forgot password link
+                    val tvForgotPassword = findViewById<TextView>(R.id.tv_forgot_password_link)
+                    tvForgotPassword.setOnClickListener() {
+                        hideKeyboard()
+                        var intent: Intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
+                        startActivity(intent)
+                    }
 
-        // forgot password link
-        val tvForgotPassword = findViewById<TextView>(R.id.tv_forgot_password_link)
-        tvForgotPassword.setOnClickListener() {
-            hideKeyboard()
-            var intent: Intent = Intent(this, ForgotPasswordActivity::class.java)
-            startActivity(intent)
-        }
+                } // else
+
+            } // withContext(Dispatchers.Main)
+
+        } // lifecycleScope.launch
 
     } // onCreate End
 
