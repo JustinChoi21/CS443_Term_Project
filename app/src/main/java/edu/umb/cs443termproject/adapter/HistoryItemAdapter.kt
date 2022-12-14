@@ -39,7 +39,7 @@ class HistoryItemAdapter(val historyList: ArrayList<HistoryItems>) : RecyclerVie
                     .replace(R.id.fragments_frame, editFragment)
                     .addToBackStack(null)
                     .commit()
-                (activity as AppCompatActivity).supportActionBar?.title = "Edit/Remove History"
+                (activity as AppCompatActivity).title = "Edit/Remove History"
                 (activity as AppCompatActivity).bottom_nav.menu.getItem(1).isChecked = true
 
                 // hide floating action button

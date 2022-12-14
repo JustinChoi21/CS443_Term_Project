@@ -86,7 +86,7 @@ class SelectCarItemAdapter(val carList: ArrayList<CarItems>) : RecyclerView.Adap
                         val homeFragment = HomeFragment.newInstance()
                         activity.supportFragmentManager.beginTransaction().replace(R.id.fragments_frame, homeFragment)
                             .addToBackStack(null).commit()
-                        activity.supportActionBar?.title = "Home"
+                        activity.title = "Home"
                         activity.bottom_nav.menu.getItem(0).isChecked = true
                     }
                 }

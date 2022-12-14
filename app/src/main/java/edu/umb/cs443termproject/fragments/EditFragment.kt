@@ -163,7 +163,7 @@ class EditFragment : Fragment() {
                             .replace(R.id.fragments_frame, historyFragment)
                             .addToBackStack(null)
                             .commit()
-                        (activity as AppCompatActivity).supportActionBar?.title = "History"
+                        (activity as AppCompatActivity).title = "History"
                         (activity as AppCompatActivity).bottom_nav.menu.getItem(1).isChecked = true
 
                         // show floating action button
@@ -191,7 +191,7 @@ class EditFragment : Fragment() {
                             .replace(R.id.fragments_frame, historyFragment)
                             .addToBackStack(null)
                             .commit()
-                        (activity as AppCompatActivity).supportActionBar?.title = "History"
+                        (activity as AppCompatActivity).title = "History"
                         (activity as AppCompatActivity).bottom_nav.menu.getItem(1).isChecked = true
 
                         // show floating action button
