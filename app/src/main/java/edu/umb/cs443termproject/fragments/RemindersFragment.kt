@@ -1,6 +1,10 @@
 package edu.umb.cs443termproject.fragments
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,12 +12,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
+import com.google.android.material.timepicker.TimeFormat.CLOCK_12H
 import edu.umb.cs443termproject.MainActivity
 import edu.umb.cs443termproject.R
 import edu.umb.cs443termproject.data.EventType
+import edu.umb.cs443termproject.notifications.AlarmReceiver
 import edu.umb.cs443termproject.notifications.NotificationHelper
 import edu.umb.cs443termproject.room.Car
 import edu.umb.cs443termproject.room.History
@@ -24,9 +33,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class RemindersFragment : Fragment() {
+
+    private lateinit var picker: MaterialTimePicker
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pendingIntent: PendingIntent
 
     companion object {
         const val TAG : String = "CS443"
@@ -63,7 +77,11 @@ class RemindersFragment : Fragment() {
 
         // initialize notificationHelper
         notificationHelper = NotificationHelper(context)
-        notificationHelper.createChannels("CS443ReminderSettings", "CS443ReminderSettings")
+        notificationHelper.createChannels("CS443ReminderSettings", "CS443ReminderSettings") // this channel is for the notification of each reminders (refuel, engine oil, tire, regular service) is on
+        notificationHelper.createChannels("CS443RefuelAlarm", "CS443RefuelAlarm")
+        notificationHelper.createChannels("CS443EngineOilAlarm", "CS443EngineOilAlarm")
+        notificationHelper.createChannels("CS443TireAlarm", "CS443TireAlarm")
+        notificationHelper.createChannels("CS443RegularServiceAlarm", "CS443RegularServiceAlarm")
 
 
         // retrieve the switch conditions from the database & set the switch status
@@ -89,16 +107,80 @@ class RemindersFragment : Fragment() {
             }
         }
 
+        // todo: retrieve the alarm time from the database
+        lifecycleScope.launch {
+
+        }
+
+        // when select set alarm time button
+        val setAlarmTimeButton = (activity as MainActivity).findViewById<TextView>(R.id.btn_set_alarm_time)
+        val alarmTimeTextView = (activity as MainActivity).findViewById<TextView>(R.id.tv_set_alarm_time)
+        setAlarmTimeButton.setOnClickListener {
+            // show time picker dialog
+            picker = MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(12)
+                .setMinute(0)
+                .setTitleText("Select Alarm Time")
+                .build()
+
+            picker.show(activity.supportFragmentManager, "CS443")
+
+            // when the time is selected
+            picker.addOnPositiveButtonClickListener {
+                val hour = picker.hour
+                val minute = picker.minute
+                val time = "$hour:$minute"
+
+                var minuteString = minute.toString()
+                if(minute < 10) {
+                    minuteString = "0$minute"
+                }
+
+                if(hour > 12) {
+                    alarmTimeTextView.text = "${hour - 12}:$minuteString PM"
+                } else {
+                    alarmTimeTextView.text = "$hour:$minuteString AM"
+                }
+
+                // update the alarm time in the database
+
+                // update the time of the previous alarm
+                alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
+                val intent = Intent(context, AlarmReceiver::class.java)
+                pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+//                alarmManager.cancel(pendingIntent)
+
+                // set the new alarm
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.HOUR_OF_DAY, picker.hour)
+                calendar.set(Calendar.MINUTE, picker.minute)
+                calendar.set(Calendar.SECOND, 0)
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+
+                // show message
+                Toast.makeText(context, "Alarm time is set", Toast.LENGTH_SHORT).show()
+
+                Log.d(TAG, "onViewCreated: alarm time is set")
+
+            } // end of addOnPositiveButtonClickListener
+
+        } // end of setAlarmTimeButton.setOnClickListener
+
+
 
         // set switch event listener
         switchRefuelReminder.setOnClickListener() {
             val isChecked = switchRefuelReminder.isChecked
             if (isChecked) {
-                Log.d(TAG, "Refuel reminder is on")
+                // show notification of refuel reminder is on
                 val title = "Refuel Reminder is On"
                 val message = "This reminder will notify you to refuel on the target date."
                 notificationHelper.showNotification("CS443ReminderSettings", 1001, title, message)
                 switchRefuelReminder.isChecked = true
+
+                // set alarm for refuel reminder
+
             } else {
                 Log.d(TAG, "Refuel reminder is off")
                 switchRefuelReminder.isChecked = false
