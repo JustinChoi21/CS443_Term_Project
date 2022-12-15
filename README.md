@@ -30,7 +30,7 @@
 
 
 ### 3. History Menu
-- You can enter your new car maintenance history (ex., refuel, change engine oil, change a tire, get regular service) by clicking the floating action button(+) on the lower left. 
+- You can enter your new car maintenance history (ex., refuel, change engine oil, change a tire, get regular service) by clicking the floating action button(+) on the lower right. 
 - you can edit or delete the car maintenance history by clicking the item.
 
 
