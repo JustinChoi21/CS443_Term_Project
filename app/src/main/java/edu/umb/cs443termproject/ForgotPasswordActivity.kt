@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import edu.umb.cs443termproject.extentions.hideKeyboard
 
@@ -21,13 +22,10 @@ class ForgotPasswordActivity: AppCompatActivity() {
 
         // get the et_forgot_password
         val etForgotPassword: TextView = findViewById(R.id.et_forgot_password)
-        if(etForgotPassword.toString() == "443") {
-            val intent: Intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
 
+        // keyboard hide
         etForgotPassword.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
+            if (!hasFocus) {
                 hideKeyboard()
             }
         }
@@ -38,8 +36,14 @@ class ForgotPasswordActivity: AppCompatActivity() {
 
         btnForgotPassword.setOnClickListener {
             hideKeyboard()
-            var intent: Intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            val etForgotPassword: TextView = findViewById(R.id.et_forgot_password)
+            if(etForgotPassword.text.toString() == "443") {
+                val intent: Intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            } else {
+                // Toast message
+                Toast.makeText(this, "Wrong answer", Toast.LENGTH_LONG).show()
+            }
         }
 
     }
