@@ -143,10 +143,17 @@ class RemindersFragment : Fragment() {
             val carList: List<Car> =
                 RoomHelper.getDatabase(activity).getCarDao().getAllCar()
 
-            val refuelFuelTankCapacity = carList[0].fuelTank
-            val engineOilInterval = carList[0].engineOil
-            val tireInterval = carList[0].tire
-            val regularServiceInterval = carList[0].regularService
+            var refuelFuelTankCapacity = 0
+            var engineOilInterval = 0
+            var tireInterval = 0
+            var regularServiceInterval = 0
+
+            if (carList.isNotEmpty()) {
+                refuelFuelTankCapacity = carList[0].fuelTank
+                engineOilInterval = carList[0].engineOil
+                tireInterval = carList[0].tire
+                regularServiceInterval = carList[0].regularService
+            }
 
             // calculate the reminder date of each event type
             refuelReminderDate = lastRefuelDate.plusMonths(1L)
