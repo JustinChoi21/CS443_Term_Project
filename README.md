@@ -14,6 +14,9 @@
 ### 3. Test Emulator
 - Pixel 5 API 32
 - Pixel 5 API 26
+
+### 4. Final Document
+- CS443_Mobile_Applications_Project_Report.pdf
 <br/>
 
 ## Features
